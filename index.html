@@ -30,601 +30,183 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
-  body {
-    font-family: var(--sans);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ── SCREENS ── */
   .screen { display: none; }
   .screen.active { display: flex; }
 
   /* ── PROFILE SCREEN ── */
   #profile-screen {
-    flex: 1;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    min-height: 100vh;
+    flex: 1; flex-direction: column; align-items: center; justify-content: center;
+    padding: 2rem; min-height: 100vh;
   }
 
   .profile-logo {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: var(--text3);
-    text-transform: uppercase;
-    margin-bottom: 3rem;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
+    color: var(--text3); text-transform: uppercase; margin-bottom: 3rem;
+    cursor: default; user-select: none;
   }
-
   .profile-logo span { color: var(--accent); }
 
-  .profile-title {
-    font-size: 28px;
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    margin-bottom: 8px;
-    text-align: center;
-  }
+  .profile-title { font-size: 28px; font-weight: 300; letter-spacing: -0.02em; color: var(--text); margin-bottom: 8px; text-align: center; }
+  .profile-sub { font-size: 14px; color: var(--text2); margin-bottom: 3rem; text-align: center; }
 
-  .profile-sub {
-    font-size: 14px;
-    color: var(--text2);
-    margin-bottom: 3rem;
-    text-align: center;
-  }
-
-  .profile-cards {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
+  .profile-cards { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
 
   .profile-card {
-    width: 160px;
-    padding: 2rem 1.5rem;
-    border: 1px solid var(--border2);
-    border-radius: 12px;
-    background: var(--surface);
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-    user-select: none;
+    width: 160px; padding: 2rem 1.5rem; border: 1px solid var(--border2);
+    border-radius: 12px; background: var(--surface); cursor: pointer;
+    text-align: center; transition: all 0.2s; user-select: none;
   }
-
-  .profile-card:hover {
-    border-color: var(--accent-border);
-    background: var(--surface2);
-    transform: translateY(-2px);
-  }
+  .profile-card:hover { border-color: var(--accent-border); background: var(--surface2); transform: translateY(-2px); }
 
   .profile-avatar {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--accent-dim);
-    border: 1px solid var(--accent-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--accent);
-    margin: 0 auto 1rem;
+    width: 56px; height: 56px; border-radius: 50%; background: var(--accent-dim);
+    border: 1px solid var(--accent-border); display: flex; align-items: center;
+    justify-content: center; font-family: var(--mono); font-size: 20px;
+    font-weight: 500; color: var(--accent); margin: 0 auto 1rem;
   }
-
-  .profile-name {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-
-  .profile-role {
-    font-size: 12px;
-    color: var(--text3);
-    font-family: var(--mono);
-  }
+  .profile-name { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .profile-role { font-size: 12px; color: var(--text3); font-family: var(--mono); }
 
   /* ── PIN SCREEN ── */
-  #pin-screen {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 2rem;
-  }
+  #pin-screen { flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
 
-  .pin-box {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 14px;
-    padding: 2rem;
-    width: min(340px, 100%);
-    text-align: center;
-  }
+  .pin-box { background: var(--surface); border: 1px solid var(--border2); border-radius: 14px; padding: 2rem; width: min(340px, 100%); text-align: center; }
 
   .pin-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--accent-dim);
-    border: 1px solid var(--accent-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 18px;
-    color: var(--accent);
-    margin: 0 auto 1rem;
+    width: 48px; height: 48px; border-radius: 50%; background: var(--accent-dim);
+    border: 1px solid var(--accent-border); display: flex; align-items: center;
+    justify-content: center; font-family: var(--mono); font-size: 18px;
+    color: var(--accent); margin: 0 auto 1rem;
   }
 
-  .pin-title {
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 6px;
-  }
+  .pin-title { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
+  .pin-sub { font-size: 13px; color: var(--text2); margin-bottom: 1.5rem; line-height: 1.6; }
 
-  .pin-sub {
-    font-size: 13px;
-    color: var(--text2);
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-  }
+  .pin-dots { display: flex; justify-content: center; gap: 12px; margin-bottom: 1.5rem; }
+  .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--border2); background: transparent; transition: all 0.15s; }
+  .pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+  .pin-dot.error { background: var(--mandatory); border-color: var(--mandatory); }
 
-  .pin-dots {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 1.5rem;
-  }
-
-  .pin-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 1px solid var(--border2);
-    background: transparent;
-    transition: all 0.15s;
-  }
-
-  .pin-dot.filled {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .pin-dot.error {
-    background: var(--mandatory);
-    border-color: var(--mandatory);
-  }
-
-  .pin-keypad {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-bottom: 1rem;
-  }
-
-  .pin-key {
-    padding: 14px;
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    background: var(--surface2);
-    color: var(--text);
-    font-size: 18px;
-    font-family: var(--mono);
-    cursor: pointer;
-    transition: all 0.12s;
-    user-select: none;
-  }
-
+  .pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
+  .pin-key { padding: 14px; border: 1px solid var(--border2); border-radius: 8px; background: var(--surface2); color: var(--text); font-size: 18px; font-family: var(--mono); cursor: pointer; transition: all 0.12s; user-select: none; }
   .pin-key:hover { background: var(--border2); }
   .pin-key:active { transform: scale(0.95); }
-
   .pin-key.zero { grid-column: 2; }
   .pin-key.del { font-size: 14px; color: var(--text2); }
 
-  .pin-error {
-    font-size: 12px;
-    color: var(--mandatory);
-    min-height: 18px;
-    font-family: var(--mono);
-  }
-
-  .pin-back {
-    margin-top: 1rem;
-    font-size: 12px;
-    color: var(--text3);
-    cursor: pointer;
-    font-family: var(--mono);
-    background: none;
-    border: none;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
+  .pin-error { font-size: 12px; color: var(--mandatory); min-height: 18px; font-family: var(--mono); }
+  .pin-back { margin-top: 1rem; font-size: 12px; color: var(--text3); cursor: pointer; font-family: var(--mono); background: none; border: none; text-decoration: underline; text-underline-offset: 3px; }
   .pin-back:hover { color: var(--text2); }
 
   /* ── MAIN APP ── */
   #app-screen { flex-direction: column; min-height: 100vh; }
 
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 24px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 50; gap: 12px; flex-wrap: wrap; }
   .topbar-left { display: flex; align-items: center; gap: 16px; }
-
-  .app-wordmark {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--text3);
-    text-transform: uppercase;
-  }
-
+  .app-wordmark { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--text3); text-transform: uppercase; }
   .app-wordmark span { color: var(--accent); }
 
-  .who-badge {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 10px 4px 4px;
-    border: 1px solid var(--border2);
-    border-radius: 20px;
-    background: var(--surface2);
-    font-size: 13px;
-    color: var(--text2);
-  }
-
-  .who-dot {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--accent-dim);
-    border: 1px solid var(--accent-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-family: var(--mono);
-    color: var(--accent);
-    font-weight: 500;
-  }
+  .who-badge { display: flex; align-items: center; gap: 8px; padding: 4px 10px 4px 4px; border: 1px solid var(--border2); border-radius: 20px; background: var(--surface2); font-size: 13px; color: var(--text2); }
+  .who-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--accent-dim); border: 1px solid var(--accent-border); display: flex; align-items: center; justify-content: center; font-size: 10px; font-family: var(--mono); color: var(--accent); font-weight: 500; }
 
   .topbar-right { display: flex; gap: 8px; align-items: center; }
 
-  .btn-ghost {
-    padding: 6px 14px;
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    background: transparent;
-    font-size: 12px;
-    font-family: var(--sans);
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-
+  .btn-ghost { padding: 6px 14px; border: 1px solid var(--border2); border-radius: 6px; background: transparent; font-size: 12px; font-family: var(--sans); color: var(--text2); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
   .btn-ghost:hover { background: var(--surface2); color: var(--text); }
 
-  .btn-danger {
-    padding: 6px 14px;
-    border: 1px solid rgba(244,100,95,0.25);
-    border-radius: 6px;
-    background: transparent;
-    font-size: 12px;
-    font-family: var(--sans);
-    color: var(--mandatory);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
+  .btn-danger { padding: 6px 14px; border: 1px solid rgba(244,100,95,0.25); border-radius: 6px; background: transparent; font-size: 12px; font-family: var(--sans); color: var(--mandatory); cursor: pointer; transition: all 0.15s; }
   .btn-danger:hover { background: var(--mandatory-dim); }
 
   .progress-track { height: 2px; background: var(--border); width: 100%; }
   .progress-fill { height: 100%; background: var(--accent); transition: width 0.4s ease; }
 
-  .main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    max-width: 720px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-    gap: 1.25rem;
-  }
+  .main { flex: 1; display: flex; flex-direction: column; max-width: 720px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem; gap: 1.25rem; }
 
-  .step-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-    text-transform: uppercase;
-  }
-
+  .step-meta { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text3); text-transform: uppercase; }
   .step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 
-  .script-card {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 12px;
-    padding: 1.5rem;
-    line-height: 1.8;
-    font-size: 15px;
-    color: var(--text);
-  }
-
+  .script-card { background: var(--surface); border: 1px solid var(--border2); border-radius: 12px; padding: 1.5rem; line-height: 1.8; font-size: 15px; color: var(--text); }
   .script-card .mandatory { color: var(--mandatory); font-weight: 500; }
-
-  .script-card .token {
-    display: inline-block;
-    background: rgba(245,165,36,0.1);
-    border: 1px solid rgba(245,165,36,0.25);
-    color: var(--amber);
-    border-radius: 4px;
-    padding: 0 6px;
-    font-family: var(--mono);
-    font-size: 12px;
-    vertical-align: middle;
-  }
-
+  .script-card .token { display: inline-block; background: rgba(245,165,36,0.1); border: 1px solid rgba(245,165,36,0.25); color: var(--amber); border-radius: 4px; padding: 0 6px; font-family: var(--mono); font-size: 12px; vertical-align: middle; }
   .script-card strong { color: var(--text); font-weight: 600; }
 
-  .note-box {
-    margin-top: 1rem;
-    padding: 12px 16px;
-    background: rgba(79,142,247,0.06);
-    border: 1px solid var(--accent-border);
-    border-radius: 8px;
-    font-size: 13px;
-    color: var(--text2);
-    line-height: 1.7;
-  }
+  .note-box { margin-top: 1rem; padding: 12px 16px; background: rgba(79,142,247,0.06); border: 1px solid var(--accent-border); border-radius: 8px; font-size: 13px; color: var(--text2); line-height: 1.7; }
+  .note-box::before { content: 'NOTE  '; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--accent); font-weight: 500; }
 
-  .note-box::before {
-    content: 'NOTE  ';
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    font-weight: 500;
-  }
-
-  .options-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-
+  .options-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text3); text-transform: uppercase; margin-bottom: 4px; }
   .options-list { display: flex; flex-direction: column; gap: 8px; }
 
-  .option-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-align: left;
-    padding: 14px 18px;
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    background: var(--surface);
-    font-size: 14px;
-    font-family: var(--sans);
-    color: var(--text2);
-    cursor: pointer;
-    transition: all 0.15s;
-    line-height: 1.5;
-  }
-
+  .option-btn { display: flex; align-items: center; gap: 12px; text-align: left; padding: 14px 18px; border: 1px solid var(--border2); border-radius: 8px; background: var(--surface); font-size: 14px; font-family: var(--sans); color: var(--text2); cursor: pointer; transition: all 0.15s; line-height: 1.5; }
   .option-btn:hover { background: var(--surface2); border-color: var(--accent-border); color: var(--text); }
 
-  .option-arrow {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1px solid var(--border2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    color: var(--accent);
-    flex-shrink: 0;
-    transition: all 0.15s;
-  }
-
+  .option-arrow { width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--accent); flex-shrink: 0; transition: all 0.15s; }
   .option-btn:hover .option-arrow { background: var(--accent-dim); border-color: var(--accent-border); }
 
   .nav-row { display: flex; gap: 8px; align-items: center; padding-top: 0.5rem; }
-  .nav-row .spacer { flex: 1; }
 
-  .done-card {
-    background: var(--green-dim);
-    border: 1px solid rgba(62,207,142,0.25);
-    border-radius: 12px;
-    padding: 2rem;
-    text-align: center;
-  }
-
+  .done-card { background: var(--green-dim); border: 1px solid rgba(62,207,142,0.25); border-radius: 12px; padding: 2rem; text-align: center; }
   .done-icon { font-size: 32px; margin-bottom: 1rem; color: var(--green); }
   .done-title { font-size: 18px; font-weight: 500; color: var(--green); margin-bottom: 8px; }
   .done-sub { font-size: 14px; color: var(--text2); }
 
-  /* ── EDITOR MODAL ── */
-  .modal-bg {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.65);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-  }
-
+  /* ── MODALS ── */
+  .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
   .modal-bg.open { display: flex; }
 
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 14px;
-    width: min(620px, 100%);
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+  .modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 14px; width: min(620px, 100%); max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; }
 
-  .modal-header {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-  }
-
+  .modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .modal-title { font-size: 15px; font-weight: 500; }
   .modal-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
 
-  .modal-close {
-    width: 28px; height: 28px;
-    border-radius: 6px;
-    border: 1px solid var(--border2);
-    background: transparent;
-    color: var(--text2);
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-  }
-
+  .modal-close { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border2); background: transparent; color: var(--text2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
   .modal-close:hover { background: var(--surface2); color: var(--text); }
 
-  .modal-body {
-    overflow-y: auto;
-    padding: 1.25rem 1.5rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
+  .modal-body { overflow-y: auto; padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; gap: 1.25rem; }
+  .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-shrink: 0; }
+  .modal-footer-right { display: flex; gap: 8px; }
 
   .edit-item { display: flex; flex-direction: column; gap: 6px; }
+  .edit-item-label { font-size: 12px; font-weight: 500; color: var(--text2); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
-  .edit-item-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text2);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 3px;
-    letter-spacing: 0.05em;
-  }
-
+  .tag { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.05em; }
   .tag-locked { background: var(--mandatory-dim); color: var(--mandatory); border: 1px solid var(--mandatory-border); }
   .tag-global { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,165,36,0.25); }
 
-  .edit-textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 7px;
-    border: 1px solid var(--border2);
-    background: var(--bg);
-    color: var(--text);
-    font-size: 13px;
-    font-family: var(--sans);
-    line-height: 1.6;
-    resize: vertical;
-    min-height: 64px;
-    transition: border-color 0.15s;
-  }
-
+  .edit-textarea { width: 100%; padding: 10px 12px; border-radius: 7px; border: 1px solid var(--border2); background: var(--bg); color: var(--text); font-size: 13px; font-family: var(--sans); line-height: 1.6; resize: vertical; min-height: 64px; transition: border-color 0.15s; }
   .edit-textarea:focus { outline: none; border-color: var(--accent-border); }
   .edit-textarea:disabled { opacity: 0.35; cursor: not-allowed; }
 
-  .modal-footer {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
-  .modal-footer-right { display: flex; gap: 8px; }
-
-  .btn-primary {
-    padding: 8px 20px;
-    border-radius: 7px;
-    border: 1px solid var(--accent-border);
-    background: var(--accent-dim);
-    color: var(--accent);
-    font-size: 13px;
-    font-family: var(--sans);
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
+  .btn-primary { padding: 8px 20px; border-radius: 7px; border: 1px solid var(--accent-border); background: var(--accent-dim); color: var(--accent); font-size: 13px; font-family: var(--sans); font-weight: 500; cursor: pointer; transition: all 0.15s; }
   .btn-primary:hover { background: rgba(79,142,247,0.2); }
 
-  .btn-warning {
-    padding: 8px 16px;
-    border-radius: 7px;
-    border: 1px solid rgba(245,165,36,0.3);
-    background: var(--amber-dim);
-    color: var(--amber);
-    font-size: 12px;
-    font-family: var(--sans);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
+  .btn-warning { padding: 8px 16px; border-radius: 7px; border: 1px solid rgba(245,165,36,0.3); background: var(--amber-dim); color: var(--amber); font-size: 12px; font-family: var(--sans); cursor: pointer; transition: all 0.15s; }
   .btn-warning:hover { background: rgba(245,165,36,0.2); }
 
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 0.25rem 0;
-  }
+  /* ── ADMIN ── */
+  #admin-modal .modal { max-width: 400px; }
+
+  .admin-section { margin-bottom: 1rem; }
+  .admin-section-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text3); text-transform: uppercase; margin-bottom: 10px; }
+
+  .admin-profile-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border: 1px solid var(--border2); border-radius: 8px; background: var(--surface2); margin-bottom: 6px; }
+  .admin-profile-name { font-size: 14px; color: var(--text); }
+  .admin-profile-status { font-size: 11px; font-family: var(--mono); color: var(--text3); }
+
+  .btn-reset { padding: 5px 12px; border-radius: 5px; border: 1px solid var(--mandatory-border); background: var(--mandatory-dim); color: var(--mandatory); font-size: 11px; font-family: var(--sans); cursor: pointer; transition: all 0.15s; }
+  .btn-reset:hover { background: rgba(244,100,95,0.2); }
+
+  .admin-input { width: 100%; padding: 10px 12px; border-radius: 7px; border: 1px solid var(--border2); background: var(--bg); color: var(--text); font-size: 13px; font-family: var(--mono); transition: border-color 0.15s; }
+  .admin-input:focus { outline: none; border-color: var(--accent-border); }
+
+  .admin-msg { font-size: 12px; font-family: var(--mono); min-height: 18px; margin-top: 6px; }
+  .admin-msg.success { color: var(--green); }
+  .admin-msg.error { color: var(--mandatory); }
+
+  /* Change PIN modal */
+  #change-pin-modal .modal { max-width: 360px; }
 
   @media (max-width: 500px) {
     .topbar { padding: 10px 16px; }
@@ -637,7 +219,7 @@
 
 <!-- ── PROFILE SCREEN ── -->
 <div id="profile-screen" class="screen active">
-  <div class="profile-logo"><span>SafeRide</span> · Script Guide</div>
+  <div class="profile-logo" id="logo-trigger"><span>SafeRide</span> · Script Guide</div>
   <div class="profile-title">Who's taking calls today?</div>
   <div class="profile-sub">Select your profile to load your personalized script.</div>
   <div class="profile-cards">
@@ -702,7 +284,6 @@
     </div>
   </div>
   <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-
   <div class="main">
     <div class="step-meta"><div class="step-dot"></div><span id="step-label-text"></span></div>
     <div class="script-card" id="script-card"></div>
@@ -724,7 +305,7 @@
     </div>
     <div class="modal-body" id="editor-body"></div>
     <div class="modal-footer">
-      <button class="btn-warning" onclick="resetPinPrompt()">Change PIN</button>
+      <button class="btn-warning" onclick="openChangePinModal()">Change PIN</button>
       <div class="modal-footer-right">
         <button class="btn-ghost" onclick="closeEditor()">Cancel</button>
         <button class="btn-primary" onclick="saveEditor()">Save changes</button>
@@ -743,7 +324,7 @@
       </div>
       <button class="modal-close" onclick="closeChangePinModal()">✕</button>
     </div>
-    <div class="modal-body" style="align-items:center; padding: 1.5rem;">
+    <div class="modal-body" style="align-items:center;">
       <div class="pin-dots">
         <div class="pin-dot" id="cpd0"></div>
         <div class="pin-dot" id="cpd1"></div>
@@ -768,7 +349,62 @@
   </div>
 </div>
 
+<!-- ── ADMIN MODAL ── -->
+<div class="modal-bg" id="admin-modal">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Admin Panel</div>
+        <div class="modal-sub" id="admin-modal-sub">Enter admin password to continue.</div>
+      </div>
+      <button class="modal-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="modal-body" id="admin-body">
+      <!-- password gate -->
+      <div id="admin-gate">
+        <div class="edit-item">
+          <div class="edit-item-label">Admin password</div>
+          <input type="password" class="admin-input" id="admin-pass-input" placeholder="Enter password" onkeydown="if(event.key==='Enter')submitAdminPass()">
+        </div>
+        <div class="admin-msg error" id="admin-pass-error"></div>
+      </div>
+      <!-- panel (shown after auth) -->
+      <div id="admin-panel" style="display:none;">
+        <div class="admin-section">
+          <div class="admin-section-title">Reset agent PIN</div>
+          <div class="admin-profile-row">
+            <div>
+              <div class="admin-profile-name">Lee</div>
+              <div class="admin-profile-status" id="lee-pin-status"></div>
+            </div>
+            <button class="btn-reset" onclick="resetPin('lee')">Reset PIN</button>
+          </div>
+          <div class="admin-profile-row">
+            <div>
+              <div class="admin-profile-name">Portia</div>
+              <div class="admin-profile-status" id="portia-pin-status"></div>
+            </div>
+            <button class="btn-reset" onclick="resetPin('portia')">Reset PIN</button>
+          </div>
+          <div class="admin-msg" id="admin-reset-msg"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:flex-end;">
+      <div id="admin-gate-footer">
+        <button class="btn-primary" onclick="submitAdminPass()">Unlock</button>
+      </div>
+      <div id="admin-panel-footer" style="display:none;">
+        <button class="btn-ghost" onclick="closeAdmin()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+// ── ADMIN HASH (SHA-256 of password) ─────────────────────────────
+const ADMIN_HASH = '9408376f5ca91b60895a5ff54f9ba6f288e1d91fba97cf2ca12a96c2ff1f78cb';
+
 // ── DEFAULTS ──────────────────────────────────────────────────────
 const DEFAULTS = {
   global: {
@@ -808,9 +444,9 @@ let scripts = JSON.parse(JSON.stringify(DEFAULTS));
 let history = [];
 let currentStep = 'greeting';
 let pinBuffer = '';
-let pinMode = ''; // 'verify' | 'set'
+let pinMode = ''; // 'set' | 'verify' | 'edit-verify'
 let cpBuffer = '';
-let cpStage = 'new'; // 'new' | 'confirm'
+let cpStage = 'new';
 let cpFirst = '';
 
 const ALL_STEPS = ['greeting','verifyName','hipaaFull','hipaaWithId','hipaaNoId','memberRequest',
@@ -819,11 +455,21 @@ const ALL_STEPS = ['greeting','verifyName','hipaaFull','hipaaWithId','hipaaNoId'
   'additionalPassengers','bookRide','returnRide','flexUber','flexLyft','flexPickupInfo',
   'recap','mysaferide','closing','done'];
 
-// ── SCREEN MANAGEMENT ─────────────────────────────────────────────
+// ── SCREEN ────────────────────────────────────────────────────────
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
+
+// ── LOGO CLICK TRIGGER (5 clicks within 3 seconds) ───────────────
+let logoClicks = 0;
+let logoTimer = null;
+document.getElementById('logo-trigger').addEventListener('click', () => {
+  logoClicks++;
+  clearTimeout(logoTimer);
+  if (logoClicks >= 5) { logoClicks = 0; openAdmin(); return; }
+  logoTimer = setTimeout(() => { logoClicks = 0; }, 3000);
+});
 
 // ── PROFILE SELECTION ─────────────────────────────────────────────
 function selectProfile(p) {
@@ -836,42 +482,49 @@ function selectProfile(p) {
   document.getElementById('who-name').textContent = label;
   pinBuffer = '';
   document.getElementById('pin-error').textContent = '';
-  updatePinDots('pd', pinBuffer);
+  updateDots('pd', '');
 
-  const storedPin = localStorage.getItem(`srpin_${profile}`);
-  if (!storedPin) {
+  const stored = localStorage.getItem(`srpin_${profile}`);
+  if (!stored) {
     pinMode = 'set';
     document.getElementById('pin-title').textContent = 'Create your PIN';
     document.getElementById('pin-sub').textContent = 'Set a 4-digit PIN to protect your script editor. You only need to do this once.';
   } else {
     pinMode = 'verify';
     document.getElementById('pin-title').textContent = `Welcome, ${label}`;
-    document.getElementById('pin-sub').textContent = 'Enter your PIN to unlock the editor when needed. The script flow is always accessible.';
+    document.getElementById('pin-sub').textContent = 'Enter your PIN to unlock the editor when needed. The script flow is always accessible without it.';
   }
   showScreen('pin-screen');
 }
 
-// ── PIN LOGIC ─────────────────────────────────────────────────────
-function updatePinDots(prefix, buf, error) {
+// ── SHA-256 (browser native) ──────────────────────────────────────
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+// ── PIN DOTS ──────────────────────────────────────────────────────
+function updateDots(prefix, buf, error) {
   for (let i = 0; i < 4; i++) {
-    const dot = document.getElementById(`${prefix}${i}`);
-    dot.classList.remove('filled','error');
-    if (error) dot.classList.add('error');
-    else if (i < buf.length) dot.classList.add('filled');
+    const d = document.getElementById(`${prefix}${i}`);
+    d.classList.remove('filled','error');
+    if (error) d.classList.add('error');
+    else if (i < buf.length) d.classList.add('filled');
   }
 }
 
+// ── PIN INPUT ─────────────────────────────────────────────────────
 function pinKey(k) {
   if (pinBuffer.length >= 4) return;
   pinBuffer += k;
   document.getElementById('pin-error').textContent = '';
-  updatePinDots('pd', pinBuffer);
+  updateDots('pd', pinBuffer);
   if (pinBuffer.length === 4) setTimeout(submitPin, 120);
 }
 
 function pinDel() {
-  pinBuffer = pinBuffer.slice(0, -1);
-  updatePinDots('pd', pinBuffer);
+  pinBuffer = pinBuffer.slice(0,-1);
+  updateDots('pd', pinBuffer);
   document.getElementById('pin-error').textContent = '';
 }
 
@@ -880,18 +533,19 @@ function submitPin() {
   if (pinMode === 'set') {
     localStorage.setItem(`srpin_${profile}`, pinBuffer);
     launchApp();
-  } else {
-    if (pinBuffer === stored) {
-      launchApp();
-    } else {
-      updatePinDots('pd', pinBuffer, true);
-      document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.';
-      setTimeout(() => {
-        pinBuffer = '';
-        updatePinDots('pd', pinBuffer);
-      }, 800);
-    }
+  } else if (pinMode === 'verify') {
+    if (pinBuffer === stored) { launchApp(); }
+    else { pinError(); }
+  } else if (pinMode === 'edit-verify') {
+    if (pinBuffer === stored) { showScreen('app-screen'); openEditor(); }
+    else { pinError(); }
   }
+}
+
+function pinError() {
+  updateDots('pd', pinBuffer, true);
+  document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.';
+  setTimeout(() => { pinBuffer = ''; updateDots('pd', ''); }, 800);
 }
 
 function launchApp() {
@@ -901,64 +555,27 @@ function launchApp() {
   showScreen('app-screen');
 }
 
-// ── REQUEST EDIT (PIN gate) ───────────────────────────────────────
+// ── REQUEST EDIT ──────────────────────────────────────────────────
 function requestEdit() {
   const stored = localStorage.getItem(`srpin_${profile}`);
   if (!stored) { openEditor(); return; }
-  // Show inline pin prompt before opening editor
-  pinVerifyForEdit();
-}
-
-let editPinBuffer = '';
-function pinVerifyForEdit() {
-  editPinBuffer = '';
-  // Re-use pin screen temporarily
-  const prevTitle = document.getElementById('pin-title').textContent;
-  const prevSub = document.getElementById('pin-sub').textContent;
   pinBuffer = '';
-  updatePinDots('pd', pinBuffer);
+  updateDots('pd', '');
   document.getElementById('pin-error').textContent = '';
+  const label = profile === 'lee' ? 'Lee' : 'Portia';
   document.getElementById('pin-title').textContent = 'Confirm your PIN';
   document.getElementById('pin-sub').textContent = 'Enter your PIN to unlock the script editor.';
+  document.getElementById('pin-avatar').textContent = profile === 'lee' ? 'L' : 'P';
   pinMode = 'edit-verify';
   showScreen('pin-screen');
 }
 
-// Patch submitPin to handle edit-verify mode
-const _origSubmitPin = submitPin;
-window.submitPin = function() {
-  if (pinMode === 'edit-verify') {
-    const stored = localStorage.getItem(`srpin_${profile}`);
-    if (pinBuffer === stored) {
-      showScreen('app-screen');
-      openEditor();
-    } else {
-      updatePinDots('pd', pinBuffer, true);
-      document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.';
-      setTimeout(() => { pinBuffer = ''; updatePinDots('pd', pinBuffer); }, 800);
-    }
-  } else {
-    _origSubmitPin();
-  }
-};
-
-// Override pinKey to call window.submitPin
-window.pinKey = function(k) {
-  if (pinBuffer.length >= 4) return;
-  pinBuffer += k;
-  document.getElementById('pin-error').textContent = '';
-  updatePinDots('pd', pinBuffer);
-  if (pinBuffer.length === 4) setTimeout(() => window.submitPin(), 120);
-};
-
 // ── CHANGE PIN ────────────────────────────────────────────────────
-function resetPinPrompt() {
-  cpBuffer = '';
-  cpStage = 'new';
-  cpFirst = '';
+function openChangePinModal() {
+  cpBuffer = ''; cpStage = 'new'; cpFirst = '';
   document.getElementById('cp-error').textContent = '';
   document.getElementById('cpm-sub').textContent = 'Enter your new 4-digit PIN.';
-  updatePinDots('cpd', cpBuffer);
+  updateDots('cpd', '');
   document.getElementById('editor-modal').classList.remove('open');
   document.getElementById('change-pin-modal').classList.add('open');
 }
@@ -972,39 +589,81 @@ function cpKey(k) {
   if (cpBuffer.length >= 4) return;
   cpBuffer += k;
   document.getElementById('cp-error').textContent = '';
-  updatePinDots('cpd', cpBuffer);
+  updateDots('cpd', cpBuffer);
   if (cpBuffer.length === 4) setTimeout(submitCp, 120);
 }
 
 function cpDel() {
-  cpBuffer = cpBuffer.slice(0, -1);
-  updatePinDots('cpd', cpBuffer);
+  cpBuffer = cpBuffer.slice(0,-1);
+  updateDots('cpd', cpBuffer);
 }
 
 function submitCp() {
   if (cpStage === 'new') {
-    cpFirst = cpBuffer;
-    cpBuffer = '';
-    cpStage = 'confirm';
+    cpFirst = cpBuffer; cpBuffer = ''; cpStage = 'confirm';
     document.getElementById('cpm-sub').textContent = 'Confirm your new PIN.';
-    updatePinDots('cpd', cpBuffer);
+    updateDots('cpd', '');
   } else {
     if (cpBuffer === cpFirst) {
       localStorage.setItem(`srpin_${profile}`, cpBuffer);
       document.getElementById('change-pin-modal').classList.remove('open');
       openEditor();
     } else {
-      updatePinDots('cpd', cpBuffer, true);
-      document.getElementById('cp-error').textContent = 'PINs do not match. Try again.';
-      setTimeout(() => {
-        cpBuffer = '';
-        cpFirst = '';
-        cpStage = 'new';
-        document.getElementById('cpm-sub').textContent = 'Enter your new 4-digit PIN.';
-        updatePinDots('cpd', cpBuffer);
-      }, 900);
+      updateDots('cpd', cpBuffer, true);
+      document.getElementById('cp-error').textContent = "PINs don't match. Starting over.";
+      setTimeout(() => { cpBuffer = ''; cpFirst = ''; cpStage = 'new'; document.getElementById('cpm-sub').textContent = 'Enter your new 4-digit PIN.'; updateDots('cpd',''); }, 900);
     }
   }
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────────
+function openAdmin() {
+  document.getElementById('admin-pass-input').value = '';
+  document.getElementById('admin-pass-error').textContent = '';
+  document.getElementById('admin-gate').style.display = '';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('admin-gate-footer').style.display = '';
+  document.getElementById('admin-panel-footer').style.display = 'none';
+  document.getElementById('admin-modal-sub').textContent = 'Enter admin password to continue.';
+  document.getElementById('admin-modal').classList.add('open');
+  setTimeout(() => document.getElementById('admin-pass-input').focus(), 100);
+}
+
+function closeAdmin() {
+  document.getElementById('admin-modal').classList.remove('open');
+}
+
+async function submitAdminPass() {
+  const val = document.getElementById('admin-pass-input').value;
+  const hash = await sha256(val);
+  if (hash === ADMIN_HASH) {
+    document.getElementById('admin-gate').style.display = 'none';
+    document.getElementById('admin-gate-footer').style.display = 'none';
+    document.getElementById('admin-panel').style.display = '';
+    document.getElementById('admin-panel-footer').style.display = '';
+    document.getElementById('admin-modal-sub').textContent = 'Manage agent PINs.';
+    refreshPinStatuses();
+  } else {
+    document.getElementById('admin-pass-error').textContent = 'Incorrect password.';
+    document.getElementById('admin-pass-input').value = '';
+  }
+}
+
+function refreshPinStatuses() {
+  const leePin = localStorage.getItem('srpin_lee');
+  const portiaPin = localStorage.getItem('srpin_portia');
+  document.getElementById('lee-pin-status').textContent = leePin ? 'PIN is set' : 'No PIN set';
+  document.getElementById('portia-pin-status').textContent = portiaPin ? 'PIN is set' : 'No PIN set';
+}
+
+function resetPin(p) {
+  localStorage.removeItem(`srpin_${p}`);
+  const name = p === 'lee' ? 'Lee' : 'Portia';
+  const msg = document.getElementById('admin-reset-msg');
+  msg.className = 'admin-msg success';
+  msg.textContent = `${name}'s PIN has been cleared. They will be prompted to set a new one on next login.`;
+  refreshPinStatuses();
+  setTimeout(() => { msg.textContent = ''; }, 4000);
 }
 
 // ── STEPS ─────────────────────────────────────────────────────────
@@ -1023,7 +682,7 @@ function getSteps() {
     verifyName: {
       label: 'Step 1a — Verify Name',
       html: `"... may I have your name, please?"<br><br>If name matches profile: <span class="mandatory">"${s.secureVerified}"</span>`,
-      note: 'If name does NOT match the profile, proceed to full HIPAA verification below.',
+      note: 'If name does NOT match the profile, proceed to full HIPAA verification.',
       options: [
         { label: 'Name matched — member verified', next: 'memberRequest' },
         { label: 'Name did not match — do full HIPAA', next: 'hipaaFull' }
@@ -1207,9 +866,7 @@ function render() {
   const steps = getSteps();
   const step = steps[currentStep];
   const idx = ALL_STEPS.indexOf(currentStep);
-  const total = ALL_STEPS.length - 1;
-
-  document.getElementById('progress-fill').style.width = `${Math.round((idx / total) * 100)}%`;
+  document.getElementById('progress-fill').style.width = `${Math.round((idx / (ALL_STEPS.length - 1)) * 100)}%`;
   document.getElementById('step-label-text').textContent = step.label;
   document.getElementById('back-btn').style.display = history.length > 0 ? '' : 'none';
 
@@ -1248,17 +905,13 @@ const EDIT_FIELDS = [
 ];
 
 function openEditor() {
-  const pLabel = profile === 'lee' ? 'Lee' : 'Portia';
-  document.getElementById('editor-title').textContent = `Edit script — ${pLabel}`;
+  document.getElementById('editor-title').textContent = `Edit script — ${profile === 'lee' ? 'Lee' : 'Portia'}`;
   document.getElementById('editor-body').innerHTML = EDIT_FIELDS.map(f => {
     const val = f.scope === 'global' ? scripts.global[f.key] : scripts[profile][f.key];
     const locked = f.mandatory ? 'disabled' : '';
     const lockTag = f.mandatory ? `<span class="tag tag-locked">MANDATORY · LOCKED</span>` : '';
     const globalTag = f.scope === 'global' ? `<span class="tag tag-global">GLOBAL — affects both</span>` : '';
-    return `<div class="edit-item">
-      <div class="edit-item-label">${f.label}${lockTag}${globalTag}</div>
-      <textarea class="edit-textarea" id="ef_${f.key}" rows="3" ${locked}>${val}</textarea>
-    </div>`;
+    return `<div class="edit-item"><div class="edit-item-label">${f.label}${lockTag}${globalTag}</div><textarea class="edit-textarea" id="ef_${f.key}" rows="3" ${locked}>${val}</textarea></div>`;
   }).join('');
   document.getElementById('editor-modal').classList.add('open');
 }
@@ -1283,10 +936,10 @@ function loadFromStorage() {
   try {
     const lee = localStorage.getItem('srscript_lee');
     const portia = localStorage.getItem('srscript_portia');
-    const global = localStorage.getItem('srscript_global');
+    const glob = localStorage.getItem('srscript_global');
     if (lee) scripts.lee = { ...DEFAULTS.lee, ...JSON.parse(lee) };
     if (portia) scripts.portia = { ...DEFAULTS.portia, ...JSON.parse(portia) };
-    if (global) scripts.global = { ...DEFAULTS.global, ...JSON.parse(global) };
+    if (glob) scripts.global = { ...DEFAULTS.global, ...JSON.parse(glob) };
   } catch(e) {}
 }
 
