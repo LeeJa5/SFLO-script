@@ -427,7 +427,7 @@ const DEFAULTS = {
     afterHoursRefusalPush: "We do not book new reservations outside of regular business hours to ensure that the transportation providers that fulfill them are readily available."
   },
   lee: {
-    greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Lee....",
+    greeting: "Thank you for calling SafeRide Health, transportation provided by your health plan. My name is Lee. How can I help you today?",
     secureVerified: "Thank you, you have been securely verified.",
     memberRequest: "Are you calling to make a new reservation, about a trip already scheduled, or do you have other questions about your benefit? I'm happy to help you with .... (trigger phrase)",
     memberRequestNewRide: '"I understand, I can help you with |TRIGGER|."',
@@ -448,7 +448,7 @@ const DEFAULTS = {
     closingEnd: "Thanks for calling SafeRide Health — have a great day."
   },
   portia: {
-    greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Portia....",
+    greeting: "Thank you for calling SafeRide Health, transportation provided by your health plan. My name is Portia. How can I help you today?",
     secureVerified: "Thank you, you have been securely verified.",
     memberRequest: "Are you calling to make a new reservation, about a trip already scheduled, or do you have other questions about your benefit? I'm happy to help you with .... (trigger phrase)",
     memberRequestNewRide: '"I understand, I can help you with |TRIGGER|."',
@@ -481,10 +481,11 @@ let cpBuffer = '';
 let cpStage = 'new';
 let cpFirst = '';
 
-const ALL_STEPS = ['greeting','hipaaFull','hipaaWithId','hipaaNoId','memberRequest',
+const ALL_STEPS = ['greeting','hipaaFull','hipaaWithId','hipaaNoId',
+  'intentLock','intentUnknown','intentKnown','memberRequest',
   'triageNewRide','triageBenefit','triageGeneral','triageMysaferide','triageComplaints',
   'triageTransfer','triageFraud','triageCantComplete',
-  'afterHours','afterHoursPush','addressVerify','gateCode','phoneVerify',
+  'afterHours','afterHoursPush','addressVerify','gateCode',
   'gmrCheck','mobilityPrior','mobilityChanges','mobilityNew','mobilityQuestions',
   'additionalPassengers','bookRide','returnRide','flexUber','flexLyft','flexPickupInfo',
   'recap','mysaferide','closing','done'];
@@ -717,34 +718,58 @@ function getSteps() {
   return {
     greeting: {
       label: 'Step 1 — Greeting',
-      html: `"${s.greeting} May I have your name, please?"<br><br>If name matches profile: <span class="mandatory">"${s.secureVerified}"</span>`,
-      note: 'If Steven HIPAA verified, the member profile will pop up automatically. If nothing or a blank page appears, you will need to do a full HIPAA verification.',
+      html: `"${s.greeting}"<br><br>If name matches profile: <span class="mandatory">"${s.secureVerified}"</span>`,
+      note: 'If HIPAA verified, the member profile will pop up automatically. If nothing or a blank page appears, you will need to do a full HIPAA verification.',
       options: [
-        { label: 'Name matched — member verified', next: 'memberRequest' },
+        { label: 'Name matched — member verified', next: 'intentLock' },
         { label: 'Name did not match — do full HIPAA', next: 'hipaaFull' },
         { label: 'No profile / blank page — do full HIPAA', next: 'hipaaFull' }
       ]
     },
     hipaaFull: {
-      label: 'Step 1c — Full HIPAA Verification',
-      html: `<span class="mandatory">"Do you have your member ID handy?"</span>`,
+      label: 'Step 1 — HIPAA Verification',
+      html: `<span class="mandatory">"Thank you, may I have your Member ID please?"</span>`,
+      note: 'Do not create a profile if none appears. File an escalation ticket if needed.',
       options: [
         { label: 'Member has their ID', next: 'hipaaWithId' },
         { label: 'Member does NOT have their ID', next: 'hipaaNoId' }
       ]
     },
     hipaaWithId: {
-      label: 'Step 1c-i — Verify with Member ID',
-      html: `<span class="mandatory">"May I please have your Name, Member ID, and Date of Birth?"</span><br><br><span class="mandatory">"Thank you for your <span class="token">[Token]</span>, <span class="token">[Token]</span>, and <span class="token">[Token]</span>."</span>`,
-      options: [{ label: 'Verified — continue', next: 'memberRequest' }]
+      label: 'Step 1 — HIPAA: With Member ID',
+      html: `<span class="mandatory">"Thank you, may I have your Member ID please?"</span><br><br><span class="mandatory">"Thank you, and your full name and date of birth please?"</span>`,
+      options: [{ label: 'Verified — continue', next: 'intentLock' }]
     },
     hipaaNoId: {
-      label: 'Step 1c-ii — Verify without Member ID',
-      html: `<span class="mandatory">"May I please have your Name, Date of Birth, and Address?"</span><br><br><span class="mandatory">"Thank you for your <span class="token">[Token]</span>, <span class="token">[Token]</span>, and <span class="token">[Token]</span>."</span>`,
-      options: [{ label: 'Verified — continue', next: 'memberRequest' }]
+      label: 'Step 1 — HIPAA: No Member ID',
+      html: `<span class="mandatory">"Thank you, may I have your full name, date of birth, and address or phone number?"</span>`,
+      options: [{ label: 'Verified — continue', next: 'intentLock' }]
+    },
+    intentLock: {
+      label: 'Step 2 — Intent Lock',
+      html: `Did the member already state why they are calling?`,
+      options: [
+        { label: 'No — unknown intent', next: 'intentUnknown' },
+        { label: 'Yes — known caller intent', next: 'intentKnown' }
+      ]
+    },
+    intentUnknown: {
+      label: 'Step 2 — Intent Lock: Ask',
+      html: `<span class="mandatory">"Are you calling to book a new ride or about an existing ride?"</span>`,
+      options: [
+        { label: 'Member responded — continue to request', next: 'memberRequest' }
+      ]
+    },
+    intentKnown: {
+      label: 'Step 2 — Intent Lock: Confirm',
+      html: `Confirm what you heard:<br><br><span class="mandatory">"Thank you, I heard you say you were calling to <span class="token">[state intent]</span>, is that correct?"</span><br><br>If confirmed: <span class="mandatory">"Thank you. I'm happy to help you with <span class="token">[restate intent]</span>."</span>`,
+      note: 'Use the member\'s own words when restating the intent. Then continue to the appropriate request type below.',
+      options: [
+        { label: 'Intent confirmed — continue to request', next: 'memberRequest' }
+      ]
     },
     memberRequest: {
-      label: 'Step 2 — Member Request',
+      label: 'Step 3 — Member Request',
       html: `"${s.memberRequest}"`,
       note: 'Select what the member is calling about to get the correct trigger phrase and next steps.',
       options: [
@@ -818,23 +843,18 @@ function getSteps() {
       options: [{ label: 'Member accepts — close call', next: 'closing' }]
     },
     addressVerify: {
-      label: 'Step 3 — Address Verification',
-      html: `"${s.addressConfirm}"<br>"${s.apartment}"`,
+      label: 'Step 4 — Address & Phone Confirmation',
+      html: `<span class="mandatory">"I have your pickup address as <span class="token">________</span>. Is that correct?"</span><br><br><span class="mandatory">"Thank you, I have your phone number as <span class="token">______</span>. Can you receive text messages at this number?"</span>`,
+      note: 'If apartment: ask for gate codes, building numbers, or special instructions. If you update a phone number, remind them to also update with their health plan or it will revert.',
       options: [
-        { label: 'Standard address — no apartment', next: 'phoneVerify' },
-        { label: 'Apartment — ask for gate codes / building info', next: 'gateCode' }
+        { label: 'Address & phone confirmed — check GMR', next: 'gmrCheck' },
+        { label: 'Apartment — need gate code / building info first', next: 'gateCode' }
       ]
     },
     gateCode: {
-      label: 'Step 3a — Gate Code / Building Info',
+      label: 'Step 4a — Gate Code / Building Info',
       html: `"${s.gateCode}"`,
-      options: [{ label: 'Info gathered — continue to phone', next: 'phoneVerify' }]
-    },
-    phoneVerify: {
-      label: 'Step 3b — Phone Verification',
-      html: `"${s.phoneConfirm}"`,
-      note: 'If you update a phone number in the member profile, remind them to also update with their health plan or it will revert.',
-      options: [{ label: 'Phone confirmed — check GMR', next: 'gmrCheck' }]
+      options: [{ label: 'Info gathered — check GMR', next: 'gmrCheck' }]
     },
     gmrCheck: {
       label: 'Step 4 — GMR Offer',
