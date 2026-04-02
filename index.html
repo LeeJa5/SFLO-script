@@ -579,9 +579,9 @@
       <div class="profile-name">Lee</div>
       <div class="profile-role">Agent</div>
     </div>
-    <div class="profile-card" onclick="startApp('jill')">
-      <div class="profile-avatar">J</div>
-      <div class="profile-name">Jill</div>
+    <div class="profile-card" onclick="startApp('Portia')">
+      <div class="profile-avatar">P</div>
+      <div class="profile-name">Portia</div>
       <div class="profile-role">Agent</div>
     </div>
   </div>
@@ -652,8 +652,8 @@ const DEFAULTS = {
     closing: "Once our call ends, you can stay on the line for a short 2-question survey about my service today. If you liked how I helped you, a score of 5 would really help. Just stay on the line after I hang up.",
     closingEnd: "Thanks for calling SafeRide Health — have a great day."
   },
-  jill: {
-    greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Jill....",
+  Portia: {
+    greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Portia....",
     secureVerified: "Thank you, you have been securely verified.",
     memberRequest: "Are you calling to make a new reservation, about a trip already scheduled, or do you have other questions about your benefit? I'm happy to help you with .... (trigger phrase)",
     addressConfirm: "Your address on file is ____.",
@@ -921,7 +921,7 @@ function startApp(p) {
   profile = p;
   loadFromStorage();
   document.getElementById('who-dot').textContent = p === 'lee' ? 'L' : 'J';
-  document.getElementById('who-name').textContent = p === 'lee' ? 'Lee' : 'Jill';
+  document.getElementById('who-name').textContent = p === 'lee' ? 'Lee' : 'Portia';
   document.getElementById('profile-screen').style.display = 'none';
   document.getElementById('app-screen').style.display = 'flex';
   history = [];
@@ -938,10 +938,10 @@ function switchProfile() {
 function loadFromStorage() {
   try {
     const leeData = localStorage.getItem('srscript_lee');
-    const jillData = localStorage.getItem('srscript_jill');
+    const PortiaData = localStorage.getItem('srscript_Portia');
     const globalData = localStorage.getItem('srscript_global');
     if (leeData) scripts.lee = { ...DEFAULTS.lee, ...JSON.parse(leeData) };
-    if (jillData) scripts.jill = { ...DEFAULTS.jill, ...JSON.parse(jillData) };
+    if (PortiaData) scripts.Portia = { ...DEFAULTS.Portia, ...JSON.parse(PortiaData) };
     if (globalData) scripts.global = { ...DEFAULTS.global, ...JSON.parse(globalData) };
   } catch(e) {}
 }
@@ -949,7 +949,7 @@ function loadFromStorage() {
 function saveToStorage() {
   try {
     localStorage.setItem('srscript_lee', JSON.stringify(scripts.lee));
-    localStorage.setItem('srscript_jill', JSON.stringify(scripts.jill));
+    localStorage.setItem('srscript_Portia', JSON.stringify(scripts.Portia));
     localStorage.setItem('srscript_global', JSON.stringify(scripts.global));
   } catch(e) {}
 }
@@ -971,7 +971,7 @@ const EDIT_FIELDS = [
 ];
 
 function openEditor() {
-  document.getElementById('editor-title').textContent = `Edit script — ${profile === 'lee' ? 'Lee' : 'Jill'}`;
+  document.getElementById('editor-title').textContent = `Edit script — ${profile === 'lee' ? 'Lee' : 'Portia'}`;
   const body = document.getElementById('editor-body');
   body.innerHTML = EDIT_FIELDS.map(f => {
     const val = f.scope === 'global' ? scripts.global[f.key] : scripts[profile][f.key];
