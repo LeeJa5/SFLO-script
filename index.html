@@ -309,13 +309,18 @@
       <button class="modal-close" onclick="closeEditor()">✕</button>
     </div>
     <div class="modal-body" id="editor-body"></div>
-    <div class="modal-footer">
-      <button class="btn-warning" onclick="openChangePinModal()">Change PIN</button>
+    <div class="modal-footer" style="flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <button class="btn-warning" onclick="openChangePinModal()">Change PIN</button>
+        <button class="btn-ghost" onclick="exportSettings()">↓ Export settings</button>
+        <label class="btn-ghost" style="cursor:pointer;margin:0;">↑ Import settings<input type="file" accept=".json" onchange="importSettings(event)" style="display:none;"></label>
+      </div>
       <div class="modal-footer-right">
         <button class="btn-ghost" onclick="closeEditor()">Cancel</button>
         <button class="btn-primary" onclick="saveEditor()">Save changes</button>
       </div>
     </div>
+    <div id="import-msg" style="padding:0 1.5rem 0.75rem;font-size:12px;font-family:var(--mono);min-height:18px;color:var(--green);"></div>
   </div>
 </div>
 
@@ -695,7 +700,7 @@ function getSteps() {
     greeting: {
       label: 'Step 1 — Greeting',
       html: `"${s.greeting} May I have your name, please?"<br><br>If name matches profile: <span class="mandatory">"${s.secureVerified}"</span>`,
-      note: 'If HIPAA verified, the member profile will pop up automatically. If nothing or a blank page appears, you will need to do a full HIPAA verification.',
+      note: 'If Steven HIPAA verified, the member profile will pop up automatically. If nothing or a blank page appears, you will need to do a full HIPAA verification.',
       options: [
         { label: 'Name matched — member verified', next: 'memberRequest' },
         { label: 'Name did not match — do full HIPAA', next: 'hipaaFull' },
@@ -945,7 +950,59 @@ function saveEditor() {
   render();
 }
 
-// ── STORAGE ───────────────────────────────────────────────────────
+// ── EXPORT / IMPORT ───────────────────────────────────────────────
+function exportSettings() {
+  const profileName = profile === 'lee' ? 'lee' : 'portia';
+  const data = {
+    profile: profileName,
+    scripts: scripts[profileName],
+    global: scripts.global,
+    exportedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `saferide-settings-${profileName}-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importSettings(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const msg = document.getElementById('import-msg');
+      if (!data.scripts || !data.profile) {
+        msg.style.color = 'var(--mandatory)';
+        msg.textContent = 'Invalid file — settings not imported.';
+        setTimeout(() => { msg.textContent = ''; }, 4000);
+        return;
+      }
+      // Only import the current profile's settings
+      scripts[profile] = { ...DEFAULTS[profile], ...data.scripts };
+      if (data.global) scripts.global = { ...DEFAULTS.global, ...data.global };
+      saveToStorage();
+      // Refresh editor fields
+      openEditor();
+      msg.style.color = 'var(--green)';
+      msg.textContent = 'Settings imported successfully.';
+      setTimeout(() => { msg.textContent = ''; }, 4000);
+    } catch(err) {
+      const msg = document.getElementById('import-msg');
+      msg.style.color = 'var(--mandatory)';
+      msg.textContent = 'Could not read file — please try again.';
+      setTimeout(() => { msg.textContent = ''; }, 4000);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+
 function loadFromStorage() {
   try {
     const lee = localStorage.getItem('srscript_lee');
