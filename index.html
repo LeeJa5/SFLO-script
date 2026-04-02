@@ -40,10 +40,13 @@
     flex-direction: column;
   }
 
+  /* ── SCREENS ── */
+  .screen { display: none; }
+  .screen.active { display: flex; }
+
   /* ── PROFILE SCREEN ── */
   #profile-screen {
     flex: 1;
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -133,8 +136,127 @@
     font-family: var(--mono);
   }
 
+  /* ── PIN SCREEN ── */
+  #pin-screen {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  .pin-box {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    padding: 2rem;
+    width: min(340px, 100%);
+    text-align: center;
+  }
+
+  .pin-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--accent);
+    margin: 0 auto 1rem;
+  }
+
+  .pin-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .pin-sub {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .pin-dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .pin-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid var(--border2);
+    background: transparent;
+    transition: all 0.15s;
+  }
+
+  .pin-dot.filled {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .pin-dot.error {
+    background: var(--mandatory);
+    border-color: var(--mandatory);
+  }
+
+  .pin-keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .pin-key {
+    padding: 14px;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 18px;
+    font-family: var(--mono);
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+  }
+
+  .pin-key:hover { background: var(--border2); }
+  .pin-key:active { transform: scale(0.95); }
+
+  .pin-key.zero { grid-column: 2; }
+  .pin-key.del { font-size: 14px; color: var(--text2); }
+
+  .pin-error {
+    font-size: 12px;
+    color: var(--mandatory);
+    min-height: 18px;
+    font-family: var(--mono);
+  }
+
+  .pin-back {
+    margin-top: 1rem;
+    font-size: 12px;
+    color: var(--text3);
+    cursor: pointer;
+    font-family: var(--mono);
+    background: none;
+    border: none;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .pin-back:hover { color: var(--text2); }
+
   /* ── MAIN APP ── */
-  #app-screen { display: none; flex-direction: column; min-height: 100vh; }
+  #app-screen { flex-direction: column; min-height: 100vh; }
 
   .topbar {
     display: flex;
@@ -150,11 +272,7 @@
     flex-wrap: wrap;
   }
 
-  .topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
 
   .app-wordmark {
     font-family: var(--mono);
@@ -208,7 +326,7 @@
     white-space: nowrap;
   }
 
-  .btn-ghost:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
 
   .btn-danger {
     padding: 6px 14px;
@@ -224,20 +342,9 @@
 
   .btn-danger:hover { background: var(--mandatory-dim); }
 
-  /* Progress */
-  .progress-track {
-    height: 2px;
-    background: var(--border);
-    width: 100%;
-  }
+  .progress-track { height: 2px; background: var(--border); width: 100%; }
+  .progress-fill { height: 100%; background: var(--accent); transition: width 0.4s ease; }
 
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    transition: width 0.4s ease;
-  }
-
-  /* Main content */
   .main {
     flex: 1;
     display: flex;
@@ -260,14 +367,8 @@
     text-transform: uppercase;
   }
 
-  .step-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-  }
+  .step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 
-  /* Script card */
   .script-card {
     background: var(--surface);
     border: 1px solid var(--border2);
@@ -278,10 +379,7 @@
     color: var(--text);
   }
 
-  .script-card .mandatory {
-    color: var(--mandatory);
-    font-weight: 500;
-  }
+  .script-card .mandatory { color: var(--mandatory); font-weight: 500; }
 
   .script-card .token {
     display: inline-block;
@@ -295,10 +393,7 @@
     vertical-align: middle;
   }
 
-  .script-card strong {
-    color: var(--text);
-    font-weight: 600;
-  }
+  .script-card strong { color: var(--text); font-weight: 600; }
 
   .note-box {
     margin-top: 1rem;
@@ -320,7 +415,6 @@
     font-weight: 500;
   }
 
-  /* Options */
   .options-label {
     font-family: var(--mono);
     font-size: 10px;
@@ -349,11 +443,7 @@
     line-height: 1.5;
   }
 
-  .option-btn:hover {
-    background: var(--surface2);
-    border-color: var(--accent-border);
-    color: var(--text);
-  }
+  .option-btn:hover { background: var(--surface2); border-color: var(--accent-border); color: var(--text); }
 
   .option-arrow {
     width: 20px;
@@ -369,22 +459,11 @@
     transition: all 0.15s;
   }
 
-  .option-btn:hover .option-arrow {
-    background: var(--accent-dim);
-    border-color: var(--accent-border);
-  }
+  .option-btn:hover .option-arrow { background: var(--accent-dim); border-color: var(--accent-border); }
 
-  /* Nav */
-  .nav-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    padding-top: 0.5rem;
-  }
-
+  .nav-row { display: flex; gap: 8px; align-items: center; padding-top: 0.5rem; }
   .nav-row .spacer { flex: 1; }
 
-  /* Done screen */
   .done-card {
     background: var(--green-dim);
     border: 1px solid rgba(62,207,142,0.25);
@@ -393,19 +472,8 @@
     text-align: center;
   }
 
-  .done-icon {
-    font-size: 32px;
-    margin-bottom: 1rem;
-    color: var(--green);
-  }
-
-  .done-title {
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--green);
-    margin-bottom: 8px;
-  }
-
+  .done-icon { font-size: 32px; margin-bottom: 1rem; color: var(--green); }
+  .done-title { font-size: 18px; font-weight: 500; color: var(--green); margin-bottom: 8px; }
   .done-sub { font-size: 14px; color: var(--text2); }
 
   /* ── EDITOR MODAL ── */
@@ -413,7 +481,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.65);
     z-index: 200;
     align-items: center;
     justify-content: center;
@@ -446,8 +514,7 @@
   .modal-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
 
   .modal-close {
-    width: 28px;
-    height: 28px;
+    width: 28px; height: 28px;
     border-radius: 6px;
     border: 1px solid var(--border2);
     background: transparent;
@@ -471,11 +538,7 @@
     gap: 1.25rem;
   }
 
-  .edit-item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
+  .edit-item { display: flex; flex-direction: column; gap: 6px; }
 
   .edit-item-label {
     font-size: 12px;
@@ -484,6 +547,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-wrap: wrap;
   }
 
   .tag {
@@ -513,20 +577,19 @@
   }
 
   .edit-textarea:focus { outline: none; border-color: var(--accent-border); }
-
-  .edit-textarea:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
+  .edit-textarea:disabled { opacity: 0.35; cursor: not-allowed; }
 
   .modal-footer {
     padding: 1rem 1.5rem;
     border-top: 1px solid var(--border);
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     gap: 8px;
     flex-shrink: 0;
   }
+
+  .modal-footer-right { display: flex; gap: 8px; }
 
   .btn-primary {
     padding: 8px 20px;
@@ -543,21 +606,25 @@
 
   .btn-primary:hover { background: rgba(79,142,247,0.2); }
 
-  /* Switch profile link */
-  .switch-link {
+  .btn-warning {
+    padding: 8px 16px;
+    border-radius: 7px;
+    border: 1px solid rgba(245,165,36,0.3);
+    background: var(--amber-dim);
+    color: var(--amber);
     font-size: 12px;
-    color: var(--text3);
+    font-family: var(--sans);
     cursor: pointer;
-    font-family: var(--mono);
-    letter-spacing: 0.05em;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    background: none;
-    border: none;
-    padding: 0;
+    transition: all 0.15s;
   }
 
-  .switch-link:hover { color: var(--text2); }
+  .btn-warning:hover { background: rgba(245,165,36,0.2); }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0.25rem 0;
+  }
 
   @media (max-width: 500px) {
     .topbar { padding: 10px 16px; }
@@ -568,18 +635,18 @@
 </head>
 <body>
 
-<!-- PROFILE SELECTION -->
-<div id="profile-screen">
+<!-- ── PROFILE SCREEN ── -->
+<div id="profile-screen" class="screen active">
   <div class="profile-logo"><span>SafeRide</span> · Script Guide</div>
   <div class="profile-title">Who's taking calls today?</div>
   <div class="profile-sub">Select your profile to load your personalized script.</div>
   <div class="profile-cards">
-    <div class="profile-card" onclick="startApp('lee')">
+    <div class="profile-card" onclick="selectProfile('lee')">
       <div class="profile-avatar">L</div>
       <div class="profile-name">Lee</div>
       <div class="profile-role">Agent</div>
     </div>
-    <div class="profile-card" onclick="startApp('Portia')">
+    <div class="profile-card" onclick="selectProfile('portia')">
       <div class="profile-avatar">P</div>
       <div class="profile-name">Portia</div>
       <div class="profile-role">Agent</div>
@@ -587,8 +654,38 @@
   </div>
 </div>
 
-<!-- MAIN APP -->
-<div id="app-screen">
+<!-- ── PIN SCREEN ── -->
+<div id="pin-screen" class="screen">
+  <div class="pin-box">
+    <div class="pin-avatar" id="pin-avatar">L</div>
+    <div class="pin-title" id="pin-title">Enter your PIN</div>
+    <div class="pin-sub" id="pin-sub">Enter your 4-digit PIN to access the script editor.</div>
+    <div class="pin-dots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-keypad">
+      <button class="pin-key" onclick="pinKey('1')">1</button>
+      <button class="pin-key" onclick="pinKey('2')">2</button>
+      <button class="pin-key" onclick="pinKey('3')">3</button>
+      <button class="pin-key" onclick="pinKey('4')">4</button>
+      <button class="pin-key" onclick="pinKey('5')">5</button>
+      <button class="pin-key" onclick="pinKey('6')">6</button>
+      <button class="pin-key" onclick="pinKey('7')">7</button>
+      <button class="pin-key" onclick="pinKey('8')">8</button>
+      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key zero" onclick="pinKey('0')">0</button>
+      <button class="pin-key del" onclick="pinDel()">⌫</button>
+    </div>
+    <div class="pin-error" id="pin-error"></div>
+    <button class="pin-back" onclick="showScreen('profile-screen')">← Back to profiles</button>
+  </div>
+</div>
+
+<!-- ── MAIN APP ── -->
+<div id="app-screen" class="screen">
   <div class="topbar">
     <div class="topbar-left">
       <div class="app-wordmark"><span>SafeRide</span> · Script</div>
@@ -598,10 +695,10 @@
       </div>
     </div>
     <div class="topbar-right">
-      <button class="btn-ghost" onclick="openEditor()">Edit my script</button>
-      <button class="btn-ghost" onclick="goBack()" id="back-btn" style="display:none">← Back</button>
+      <button class="btn-ghost" onclick="requestEdit()">Edit my script</button>
+      <button class="btn-ghost" id="back-btn" style="display:none" onclick="goBack()">← Back</button>
       <button class="btn-danger" onclick="restartCall()">↺ New call</button>
-      <button class="btn-ghost" onclick="switchProfile()">Switch</button>
+      <button class="btn-ghost" onclick="showScreen('profile-screen')">Switch</button>
     </div>
   </div>
   <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
@@ -615,7 +712,7 @@
   </div>
 </div>
 
-<!-- EDITOR MODAL -->
+<!-- ── EDITOR MODAL ── -->
 <div class="modal-bg" id="editor-modal">
   <div class="modal">
     <div class="modal-header">
@@ -627,14 +724,52 @@
     </div>
     <div class="modal-body" id="editor-body"></div>
     <div class="modal-footer">
-      <button class="btn-ghost" onclick="closeEditor()">Cancel</button>
-      <button class="btn-primary" onclick="saveEditor()">Save changes</button>
+      <button class="btn-warning" onclick="resetPinPrompt()">Change PIN</button>
+      <div class="modal-footer-right">
+        <button class="btn-ghost" onclick="closeEditor()">Cancel</button>
+        <button class="btn-primary" onclick="saveEditor()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHANGE PIN MODAL ── -->
+<div class="modal-bg" id="change-pin-modal">
+  <div class="modal" style="max-width:360px;">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Change PIN</div>
+        <div class="modal-sub" id="cpm-sub">Enter a new 4-digit PIN.</div>
+      </div>
+      <button class="modal-close" onclick="closeChangePinModal()">✕</button>
+    </div>
+    <div class="modal-body" style="align-items:center; padding: 1.5rem;">
+      <div class="pin-dots">
+        <div class="pin-dot" id="cpd0"></div>
+        <div class="pin-dot" id="cpd1"></div>
+        <div class="pin-dot" id="cpd2"></div>
+        <div class="pin-dot" id="cpd3"></div>
+      </div>
+      <div class="pin-keypad" style="width:100%;">
+        <button class="pin-key" onclick="cpKey('1')">1</button>
+        <button class="pin-key" onclick="cpKey('2')">2</button>
+        <button class="pin-key" onclick="cpKey('3')">3</button>
+        <button class="pin-key" onclick="cpKey('4')">4</button>
+        <button class="pin-key" onclick="cpKey('5')">5</button>
+        <button class="pin-key" onclick="cpKey('6')">6</button>
+        <button class="pin-key" onclick="cpKey('7')">7</button>
+        <button class="pin-key" onclick="cpKey('8')">8</button>
+        <button class="pin-key" onclick="cpKey('9')">9</button>
+        <button class="pin-key zero" onclick="cpKey('0')">0</button>
+        <button class="pin-key del" onclick="cpDel()">⌫</button>
+      </div>
+      <div class="pin-error" id="cp-error"></div>
     </div>
   </div>
 </div>
 
 <script>
-// ── DEFAULT SCRIPTS ──────────────────────────────────────────────
+// ── DEFAULTS ──────────────────────────────────────────────────────
 const DEFAULTS = {
   global: {
     afterHoursRefusalPush: "We do not book new reservations outside of regular business hours to ensure that the transportation providers that fulfill them are readily available."
@@ -652,7 +787,7 @@ const DEFAULTS = {
     closing: "Once our call ends, you can stay on the line for a short 2-question survey about my service today. If you liked how I helped you, a score of 5 would really help. Just stay on the line after I hang up.",
     closingEnd: "Thanks for calling SafeRide Health — have a great day."
   },
-  Portia: {
+  portia: {
     greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Portia....",
     secureVerified: "Thank you, you have been securely verified.",
     memberRequest: "Are you calling to make a new reservation, about a trip already scheduled, or do you have other questions about your benefit? I'm happy to help you with .... (trigger phrase)",
@@ -672,12 +807,205 @@ let profile = 'lee';
 let scripts = JSON.parse(JSON.stringify(DEFAULTS));
 let history = [];
 let currentStep = 'greeting';
+let pinBuffer = '';
+let pinMode = ''; // 'verify' | 'set'
+let cpBuffer = '';
+let cpStage = 'new'; // 'new' | 'confirm'
+let cpFirst = '';
 
 const ALL_STEPS = ['greeting','verifyName','hipaaFull','hipaaWithId','hipaaNoId','memberRequest',
   'afterHours','afterHoursPush','otherRequest','addressVerify','gateCode','phoneVerify',
   'gmrCheck','mobilityPrior','mobilityChanges','mobilityNew','mobilityQuestions',
   'additionalPassengers','bookRide','returnRide','flexUber','flexLyft','flexPickupInfo',
   'recap','mysaferide','closing','done'];
+
+// ── SCREEN MANAGEMENT ─────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── PROFILE SELECTION ─────────────────────────────────────────────
+function selectProfile(p) {
+  profile = p;
+  loadFromStorage();
+  const label = p === 'lee' ? 'Lee' : 'Portia';
+  const initial = p === 'lee' ? 'L' : 'P';
+  document.getElementById('pin-avatar').textContent = initial;
+  document.getElementById('who-dot').textContent = initial;
+  document.getElementById('who-name').textContent = label;
+  pinBuffer = '';
+  document.getElementById('pin-error').textContent = '';
+  updatePinDots('pd', pinBuffer);
+
+  const storedPin = localStorage.getItem(`srpin_${profile}`);
+  if (!storedPin) {
+    pinMode = 'set';
+    document.getElementById('pin-title').textContent = 'Create your PIN';
+    document.getElementById('pin-sub').textContent = 'Set a 4-digit PIN to protect your script editor. You only need to do this once.';
+  } else {
+    pinMode = 'verify';
+    document.getElementById('pin-title').textContent = `Welcome, ${label}`;
+    document.getElementById('pin-sub').textContent = 'Enter your PIN to unlock the editor when needed. The script flow is always accessible.';
+  }
+  showScreen('pin-screen');
+}
+
+// ── PIN LOGIC ─────────────────────────────────────────────────────
+function updatePinDots(prefix, buf, error) {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById(`${prefix}${i}`);
+    dot.classList.remove('filled','error');
+    if (error) dot.classList.add('error');
+    else if (i < buf.length) dot.classList.add('filled');
+  }
+}
+
+function pinKey(k) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += k;
+  document.getElementById('pin-error').textContent = '';
+  updatePinDots('pd', pinBuffer);
+  if (pinBuffer.length === 4) setTimeout(submitPin, 120);
+}
+
+function pinDel() {
+  pinBuffer = pinBuffer.slice(0, -1);
+  updatePinDots('pd', pinBuffer);
+  document.getElementById('pin-error').textContent = '';
+}
+
+function submitPin() {
+  const stored = localStorage.getItem(`srpin_${profile}`);
+  if (pinMode === 'set') {
+    localStorage.setItem(`srpin_${profile}`, pinBuffer);
+    launchApp();
+  } else {
+    if (pinBuffer === stored) {
+      launchApp();
+    } else {
+      updatePinDots('pd', pinBuffer, true);
+      document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.';
+      setTimeout(() => {
+        pinBuffer = '';
+        updatePinDots('pd', pinBuffer);
+      }, 800);
+    }
+  }
+}
+
+function launchApp() {
+  history = [];
+  currentStep = 'greeting';
+  render();
+  showScreen('app-screen');
+}
+
+// ── REQUEST EDIT (PIN gate) ───────────────────────────────────────
+function requestEdit() {
+  const stored = localStorage.getItem(`srpin_${profile}`);
+  if (!stored) { openEditor(); return; }
+  // Show inline pin prompt before opening editor
+  pinVerifyForEdit();
+}
+
+let editPinBuffer = '';
+function pinVerifyForEdit() {
+  editPinBuffer = '';
+  // Re-use pin screen temporarily
+  const prevTitle = document.getElementById('pin-title').textContent;
+  const prevSub = document.getElementById('pin-sub').textContent;
+  pinBuffer = '';
+  updatePinDots('pd', pinBuffer);
+  document.getElementById('pin-error').textContent = '';
+  document.getElementById('pin-title').textContent = 'Confirm your PIN';
+  document.getElementById('pin-sub').textContent = 'Enter your PIN to unlock the script editor.';
+  pinMode = 'edit-verify';
+  showScreen('pin-screen');
+}
+
+// Patch submitPin to handle edit-verify mode
+const _origSubmitPin = submitPin;
+window.submitPin = function() {
+  if (pinMode === 'edit-verify') {
+    const stored = localStorage.getItem(`srpin_${profile}`);
+    if (pinBuffer === stored) {
+      showScreen('app-screen');
+      openEditor();
+    } else {
+      updatePinDots('pd', pinBuffer, true);
+      document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.';
+      setTimeout(() => { pinBuffer = ''; updatePinDots('pd', pinBuffer); }, 800);
+    }
+  } else {
+    _origSubmitPin();
+  }
+};
+
+// Override pinKey to call window.submitPin
+window.pinKey = function(k) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += k;
+  document.getElementById('pin-error').textContent = '';
+  updatePinDots('pd', pinBuffer);
+  if (pinBuffer.length === 4) setTimeout(() => window.submitPin(), 120);
+};
+
+// ── CHANGE PIN ────────────────────────────────────────────────────
+function resetPinPrompt() {
+  cpBuffer = '';
+  cpStage = 'new';
+  cpFirst = '';
+  document.getElementById('cp-error').textContent = '';
+  document.getElementById('cpm-sub').textContent = 'Enter your new 4-digit PIN.';
+  updatePinDots('cpd', cpBuffer);
+  document.getElementById('editor-modal').classList.remove('open');
+  document.getElementById('change-pin-modal').classList.add('open');
+}
+
+function closeChangePinModal() {
+  document.getElementById('change-pin-modal').classList.remove('open');
+  openEditor();
+}
+
+function cpKey(k) {
+  if (cpBuffer.length >= 4) return;
+  cpBuffer += k;
+  document.getElementById('cp-error').textContent = '';
+  updatePinDots('cpd', cpBuffer);
+  if (cpBuffer.length === 4) setTimeout(submitCp, 120);
+}
+
+function cpDel() {
+  cpBuffer = cpBuffer.slice(0, -1);
+  updatePinDots('cpd', cpBuffer);
+}
+
+function submitCp() {
+  if (cpStage === 'new') {
+    cpFirst = cpBuffer;
+    cpBuffer = '';
+    cpStage = 'confirm';
+    document.getElementById('cpm-sub').textContent = 'Confirm your new PIN.';
+    updatePinDots('cpd', cpBuffer);
+  } else {
+    if (cpBuffer === cpFirst) {
+      localStorage.setItem(`srpin_${profile}`, cpBuffer);
+      document.getElementById('change-pin-modal').classList.remove('open');
+      openEditor();
+    } else {
+      updatePinDots('cpd', cpBuffer, true);
+      document.getElementById('cp-error').textContent = 'PINs do not match. Try again.';
+      setTimeout(() => {
+        cpBuffer = '';
+        cpFirst = '';
+        cpStage = 'new';
+        document.getElementById('cpm-sub').textContent = 'Enter your new 4-digit PIN.';
+        updatePinDots('cpd', cpBuffer);
+      }, 900);
+    }
+  }
+}
 
 // ── STEPS ─────────────────────────────────────────────────────────
 function getSteps() {
@@ -740,12 +1068,12 @@ function getSteps() {
     afterHoursPush: {
       label: 'After-Hours — Member pushes back',
       html: `"${g.afterHoursRefusalPush}"`,
-      note: 'This is a Global line — it applies to both profiles.',
+      note: 'Global line — applies to all profiles.',
       options: [{ label: 'Member accepts — close call', next: 'closing' }]
     },
     otherRequest: {
       label: 'Other Requests',
-      html: `Handle the member's request per the relevant SOP.<br><br>Transfers to Alt Trans dept: <strong>833-944-0517</strong><br><br>For complicated / multileg trips, use the discard phrase <span class="mandatory">"complete this process"</span> so OAI does not grade the call.`,
+      html: `Handle the member's request per the relevant SOP.<br><br>Transfers to Alt Trans dept: <strong>833-944-0517</strong><br><br>For complicated / multileg trips use the discard phrase <span class="mandatory">"complete this process"</span> so OAI does not grade the call.`,
       options: [{ label: 'Request handled — close call', next: 'closing' }]
     },
     addressVerify: {
@@ -894,101 +1222,48 @@ function render() {
     card.innerHTML = html;
   }
 
-  const ol = document.getElementById('options-list');
-  ol.innerHTML = step.options.map(opt =>
+  document.getElementById('options-list').innerHTML = step.options.map(opt =>
     `<button class="option-btn" onclick="choose('${opt.next}')"><span class="option-arrow">›</span>${opt.label}</button>`
   ).join('');
 }
 
-function choose(next) {
-  history.push(currentStep);
-  currentStep = next;
-  render();
-}
-
-function goBack() {
-  if (history.length > 0) { currentStep = history.pop(); render(); }
-}
-
-function restartCall() {
-  history = [];
-  currentStep = 'greeting';
-  render();
-}
-
-// ── PROFILE ───────────────────────────────────────────────────────
-function startApp(p) {
-  profile = p;
-  loadFromStorage();
-  document.getElementById('who-dot').textContent = p === 'lee' ? 'L' : 'J';
-  document.getElementById('who-name').textContent = p === 'lee' ? 'Lee' : 'Portia';
-  document.getElementById('profile-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display = 'flex';
-  history = [];
-  currentStep = 'greeting';
-  render();
-}
-
-function switchProfile() {
-  document.getElementById('app-screen').style.display = 'none';
-  document.getElementById('profile-screen').style.display = 'flex';
-}
-
-// ── LOCAL STORAGE ─────────────────────────────────────────────────
-function loadFromStorage() {
-  try {
-    const leeData = localStorage.getItem('srscript_lee');
-    const PortiaData = localStorage.getItem('srscript_Portia');
-    const globalData = localStorage.getItem('srscript_global');
-    if (leeData) scripts.lee = { ...DEFAULTS.lee, ...JSON.parse(leeData) };
-    if (PortiaData) scripts.Portia = { ...DEFAULTS.Portia, ...JSON.parse(PortiaData) };
-    if (globalData) scripts.global = { ...DEFAULTS.global, ...JSON.parse(globalData) };
-  } catch(e) {}
-}
-
-function saveToStorage() {
-  try {
-    localStorage.setItem('srscript_lee', JSON.stringify(scripts.lee));
-    localStorage.setItem('srscript_Portia', JSON.stringify(scripts.Portia));
-    localStorage.setItem('srscript_global', JSON.stringify(scripts.global));
-  } catch(e) {}
-}
+function choose(next) { history.push(currentStep); currentStep = next; render(); }
+function goBack() { if (history.length > 0) { currentStep = history.pop(); render(); } }
+function restartCall() { history = []; currentStep = 'greeting'; render(); }
 
 // ── EDITOR ────────────────────────────────────────────────────────
 const EDIT_FIELDS = [
-  { key: 'greeting',             label: 'Greeting',                          scope: 'profile', mandatory: false },
-  { key: 'memberRequest',        label: 'Member Request intro',              scope: 'profile', mandatory: false },
-  { key: 'addressConfirm',       label: 'Address confirmation',              scope: 'profile', mandatory: false },
-  { key: 'apartment',            label: 'Apartment question',                scope: 'profile', mandatory: false },
-  { key: 'gateCode',             label: 'Gate code / building info request', scope: 'profile', mandatory: false },
-  { key: 'phoneConfirm',         label: 'Phone confirmation',                scope: 'profile', mandatory: false },
-  { key: 'afterHoursRefusal',    label: 'After-hours refusal (1st response)',scope: 'profile', mandatory: false },
-  { key: 'afterHoursRefusalPush',label: 'After-hours — member pushes back',  scope: 'global',  mandatory: false },
-  { key: 'gmrOffer',             label: 'GMR offer language',                scope: 'profile', mandatory: false },
-  { key: 'closing',              label: 'Closing (survey mention)',           scope: 'profile', mandatory: false },
-  { key: 'closingEnd',           label: 'Closing sign-off line',             scope: 'profile', mandatory: false },
-  { key: 'secureVerified',       label: 'Secure Verified phrase',            scope: 'profile', mandatory: true  },
+  { key: 'greeting',              label: 'Greeting',                           scope: 'profile', mandatory: false },
+  { key: 'memberRequest',         label: 'Member Request intro',               scope: 'profile', mandatory: false },
+  { key: 'addressConfirm',        label: 'Address confirmation',               scope: 'profile', mandatory: false },
+  { key: 'apartment',             label: 'Apartment question',                 scope: 'profile', mandatory: false },
+  { key: 'gateCode',              label: 'Gate code / building info request',  scope: 'profile', mandatory: false },
+  { key: 'phoneConfirm',          label: 'Phone confirmation',                 scope: 'profile', mandatory: false },
+  { key: 'afterHoursRefusal',     label: 'After-hours refusal (1st response)', scope: 'profile', mandatory: false },
+  { key: 'afterHoursRefusalPush', label: 'After-hours — member pushes back',   scope: 'global',  mandatory: false },
+  { key: 'gmrOffer',              label: 'GMR offer language',                 scope: 'profile', mandatory: false },
+  { key: 'closing',               label: 'Closing (survey mention)',           scope: 'profile', mandatory: false },
+  { key: 'closingEnd',            label: 'Closing sign-off line',              scope: 'profile', mandatory: false },
+  { key: 'secureVerified',        label: 'Secure Verified phrase',             scope: 'profile', mandatory: true  },
 ];
 
 function openEditor() {
-  document.getElementById('editor-title').textContent = `Edit script — ${profile === 'lee' ? 'Lee' : 'Portia'}`;
-  const body = document.getElementById('editor-body');
-  body.innerHTML = EDIT_FIELDS.map(f => {
+  const pLabel = profile === 'lee' ? 'Lee' : 'Portia';
+  document.getElementById('editor-title').textContent = `Edit script — ${pLabel}`;
+  document.getElementById('editor-body').innerHTML = EDIT_FIELDS.map(f => {
     const val = f.scope === 'global' ? scripts.global[f.key] : scripts[profile][f.key];
     const locked = f.mandatory ? 'disabled' : '';
     const lockTag = f.mandatory ? `<span class="tag tag-locked">MANDATORY · LOCKED</span>` : '';
     const globalTag = f.scope === 'global' ? `<span class="tag tag-global">GLOBAL — affects both</span>` : '';
     return `<div class="edit-item">
-      <div class="edit-item-label">${f.label} ${lockTag}${globalTag}</div>
+      <div class="edit-item-label">${f.label}${lockTag}${globalTag}</div>
       <textarea class="edit-textarea" id="ef_${f.key}" rows="3" ${locked}>${val}</textarea>
     </div>`;
   }).join('');
   document.getElementById('editor-modal').classList.add('open');
 }
 
-function closeEditor() {
-  document.getElementById('editor-modal').classList.remove('open');
-}
+function closeEditor() { document.getElementById('editor-modal').classList.remove('open'); }
 
 function saveEditor() {
   EDIT_FIELDS.forEach(f => {
@@ -1003,7 +1278,26 @@ function saveEditor() {
   render();
 }
 
-// init
+// ── STORAGE ───────────────────────────────────────────────────────
+function loadFromStorage() {
+  try {
+    const lee = localStorage.getItem('srscript_lee');
+    const portia = localStorage.getItem('srscript_portia');
+    const global = localStorage.getItem('srscript_global');
+    if (lee) scripts.lee = { ...DEFAULTS.lee, ...JSON.parse(lee) };
+    if (portia) scripts.portia = { ...DEFAULTS.portia, ...JSON.parse(portia) };
+    if (global) scripts.global = { ...DEFAULTS.global, ...JSON.parse(global) };
+  } catch(e) {}
+}
+
+function saveToStorage() {
+  try {
+    localStorage.setItem('srscript_lee', JSON.stringify(scripts.lee));
+    localStorage.setItem('srscript_portia', JSON.stringify(scripts.portia));
+    localStorage.setItem('srscript_global', JSON.stringify(scripts.global));
+  } catch(e) {}
+}
+
 loadFromStorage();
 </script>
 </body>
