@@ -424,6 +424,14 @@ const DEFAULTS = {
     greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Lee....",
     secureVerified: "Thank you, you have been securely verified.",
     memberRequest: "Are you calling to make a new reservation, about a trip already scheduled, or do you have other questions about your benefit? I'm happy to help you with .... (trigger phrase)",
+    memberRequestNewRide: '"I understand, I can help you with',
+    memberRequestBenefit: '"Of course, let me help you with your',
+    memberRequestGeneral: '"Happy to help — that',
+    memberRequestMysaferide: '"Sure, I can help you with the',
+    memberRequestComplaints: '"I\'m sorry to hear that, I can help you',
+    memberRequestTransfer: '"Absolutely, let me get you to the',
+    memberRequestFraud: '"I understand, we will',
+    memberRequestCantComplete: '"I\'m sorry I wasn\'t able to assist you fully today, but I will',
     addressConfirm: "Your address on file is ____.",
     apartment: "Is this an apartment?",
     gateCode: "Can you please provide any gate codes, building numbers, or special instructions our driver might need to find you easily?",
@@ -437,6 +445,14 @@ const DEFAULTS = {
     greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Portia....",
     secureVerified: "Thank you, you have been securely verified.",
     memberRequest: "Are you calling to make a new reservation, about a trip already scheduled, or do you have other questions about your benefit? I'm happy to help you with .... (trigger phrase)",
+    memberRequestNewRide: '"I understand, I can help you with',
+    memberRequestBenefit: '"Of course, let me help you with your',
+    memberRequestGeneral: '"Happy to help — that',
+    memberRequestMysaferide: '"Sure, I can help you with the',
+    memberRequestComplaints: '"I\'m sorry to hear that, I can help you',
+    memberRequestTransfer: '"Absolutely, let me get you to the',
+    memberRequestFraud: '"I understand, we will',
+    memberRequestCantComplete: '"I\'m sorry I wasn\'t able to assist you fully today, but I will',
     addressConfirm: "Your address on file is ____.",
     apartment: "Is this an apartment?",
     gateCode: "Can you please provide any gate codes, building numbers, or special instructions our driver might need to find you easily?",
@@ -460,7 +476,9 @@ let cpStage = 'new';
 let cpFirst = '';
 
 const ALL_STEPS = ['greeting','hipaaFull','hipaaWithId','hipaaNoId','memberRequest',
-  'afterHours','afterHoursPush','otherRequest','addressVerify','gateCode','phoneVerify',
+  'triageNewRide','triageBenefit','triageGeneral','triageMysaferide','triageComplaints',
+  'triageTransfer','triageFraud','triageCantComplete',
+  'afterHours','afterHoursPush','addressVerify','gateCode','phoneVerify',
   'gmrCheck','mobilityPrior','mobilityChanges','mobilityNew','mobilityQuestions',
   'additionalPassengers','bookRide','returnRide','flexUber','flexLyft','flexPickupInfo',
   'recap','mysaferide','closing','done'];
@@ -700,7 +718,7 @@ function getSteps() {
     greeting: {
       label: 'Step 1 — Greeting',
       html: `"${s.greeting} May I have your name, please?"<br><br>If name matches profile: <span class="mandatory">"${s.secureVerified}"</span>`,
-      note: 'If HIPAA verified, the member profile will pop up automatically. If nothing or a blank page appears, you will need to do a full HIPAA verification.',
+      note: 'If Steven HIPAA verified, the member profile will pop up automatically. If nothing or a blank page appears, you will need to do a full HIPAA verification.',
       options: [
         { label: 'Name matched — member verified', next: 'memberRequest' },
         { label: 'Name did not match — do full HIPAA', next: 'hipaaFull' },
@@ -728,12 +746,62 @@ function getSteps() {
     memberRequest: {
       label: 'Step 2 — Member Request',
       html: `"${s.memberRequest}"`,
-      note: 'New Ride → "Booking a new ride" | Benefit Balance → "Ride balance/additional rides" | General → "Depends on… covered by your health plan" | Complaints → "Fill out a complaint form / Connect you with member services" | After-hours NEMT → cannot book, explain policy.',
+      note: 'Select what the member is calling about to get the correct trigger phrase and next steps.',
       options: [
-        { label: 'New reservation', next: 'addressVerify' },
-        { label: 'After-hours NEMT booking attempt', next: 'afterHours' },
-        { label: 'Other (benefit, complaint, general)', next: 'otherRequest' }
+        { label: 'New ride', next: 'triageNewRide' },
+        { label: 'Benefit balance', next: 'triageBenefit' },
+        { label: 'General question', next: 'triageGeneral' },
+        { label: 'MySafeRide App questions', next: 'triageMysaferide' },
+        { label: 'Complaints', next: 'triageComplaints' },
+        { label: 'Transfer to correct department', next: 'triageTransfer' },
+        { label: 'Fraud', next: 'triageFraud' },
+        { label: 'Can\'t complete request', next: 'triageCantComplete' }
       ]
+    },
+    triageNewRide: {
+      label: 'Step 2 — New Ride',
+      html: `${s.memberRequestNewRide} <span class="mandatory">booking a new ride</span>."`,
+      note: 'Continue into the booking flow. After-hours check will come up naturally during booking.',
+      options: [
+        { label: 'Scheduling during business hours — continue', next: 'addressVerify' },
+        { label: 'After-hours NEMT attempt', next: 'afterHours' }
+      ]
+    },
+    triageBenefit: {
+      label: 'Step 2 — Benefit Balance',
+      html: `${s.memberRequestBenefit} <span class="mandatory">ride balance / additional rides</span>."`,
+      options: [{ label: 'Handled — close call', next: 'closing' }]
+    },
+    triageGeneral: {
+      label: 'Step 2 — General Question',
+      html: `${s.memberRequestGeneral} <span class="mandatory">depends on... covered by your health plan</span>."`,
+      options: [{ label: 'Handled — close call', next: 'closing' }]
+    },
+    triageMysaferide: {
+      label: 'Step 2 — MySafeRide App',
+      html: `${s.memberRequestMysaferide} <span class="mandatory">MySafeRide App</span>."<br><br><span style="color:var(--amber);font-weight:500;">⚠ WIP</span> — For more information about the SafeRide app, see the SOP page.`,
+      options: [{ label: 'Handled — close call', next: 'closing' }]
+    },
+    triageComplaints: {
+      label: 'Step 2 — Complaints',
+      html: `${s.memberRequestComplaints} <span class="mandatory">fill out a complaint form / connect you with member services... report</span>."`,
+      options: [{ label: 'Handled — close call', next: 'closing' }]
+    },
+    triageTransfer: {
+      label: 'Step 2 — Transfer to Correct Department',
+      html: `${s.memberRequestTransfer} <span class="mandatory">correct department</span>."<br><br>Alt Trans dept: <strong>833-944-0517</strong>`,
+      options: [{ label: 'Transferred — close call', next: 'closing' }]
+    },
+    triageFraud: {
+      label: 'Step 2 — Fraud',
+      html: `${s.memberRequestFraud} <span class="mandatory">investigate</span>."`,
+      options: [{ label: 'Handled — close call', next: 'closing' }]
+    },
+    triageCantComplete: {
+      label: 'Step 2 — Can\'t Complete Request',
+      html: `${s.memberRequestCantComplete} <span class="mandatory">complete this process</span>."`,
+      note: 'Using "complete this process" ensures OAI does not grade this call.',
+      options: [{ label: 'Discard phrase used — close call', next: 'closing' }]
     },
     afterHours: {
       label: 'After-Hours Policy',
@@ -748,11 +816,6 @@ function getSteps() {
       html: `"${g.afterHoursRefusalPush}"`,
       note: 'Global line — applies to all profiles.',
       options: [{ label: 'Member accepts — close call', next: 'closing' }]
-    },
-    otherRequest: {
-      label: 'Other Requests',
-      html: `Handle the member's request per the relevant SOP.<br><br>Transfers to Alt Trans dept: <strong>833-944-0517</strong><br><br>For complicated / multileg trips use the discard phrase <span class="mandatory">"complete this process"</span> so OAI does not grade the call.`,
-      options: [{ label: 'Request handled — close call', next: 'closing' }]
     },
     addressVerify: {
       label: 'Step 3 — Address Verification',
@@ -911,6 +974,14 @@ function restartCall() { history = []; currentStep = 'greeting'; render(); }
 const EDIT_FIELDS = [
   { key: 'greeting',              label: 'Greeting',                           scope: 'profile', mandatory: false },
   { key: 'memberRequest',         label: 'Member Request intro',               scope: 'profile', mandatory: false },
+  { key: 'memberRequestNewRide',  label: 'New ride — intro before trigger',    scope: 'profile', mandatory: false },
+  { key: 'memberRequestBenefit',  label: 'Benefit balance — intro before trigger', scope: 'profile', mandatory: false },
+  { key: 'memberRequestGeneral',  label: 'General — intro before trigger',     scope: 'profile', mandatory: false },
+  { key: 'memberRequestMysaferide', label: 'MySafeRide — intro before trigger', scope: 'profile', mandatory: false },
+  { key: 'memberRequestComplaints', label: 'Complaints — intro before trigger', scope: 'profile', mandatory: false },
+  { key: 'memberRequestTransfer', label: 'Transfer — intro before trigger',    scope: 'profile', mandatory: false },
+  { key: 'memberRequestFraud',    label: 'Fraud — intro before trigger',       scope: 'profile', mandatory: false },
+  { key: 'memberRequestCantComplete', label: 'Can\'t complete — intro before trigger', scope: 'profile', mandatory: false },
   { key: 'addressConfirm',        label: 'Address confirmation',               scope: 'profile', mandatory: false },
   { key: 'apartment',             label: 'Apartment question',                 scope: 'profile', mandatory: false },
   { key: 'gateCode',              label: 'Gate code / building info request',  scope: 'profile', mandatory: false },
