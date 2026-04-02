@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeRide Script Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1e2333;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #e8eaf0;
+    --text2: #8b90a0;
+    --text3: #555c70;
+    --accent: #4f8ef7;
+    --accent-dim: rgba(79,142,247,0.12);
+    --accent-border: rgba(79,142,247,0.3);
+    --mandatory: #f4645f;
+    --mandatory-dim: rgba(244,100,95,0.1);
+    --mandatory-border: rgba(244,100,95,0.25);
+    --green: #3ecf8e;
+    --green-dim: rgba(62,207,142,0.1);
+    --amber: #f5a524;
+    --amber-dim: rgba(245,165,36,0.1);
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── PROFILE SCREEN ── */
+  #profile-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 100vh;
+  }
+
+  .profile-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  .profile-logo span { color: var(--accent); }
+
+  .profile-title {
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .profile-sub {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .profile-cards {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .profile-card {
+    width: 160px;
+    padding: 2rem 1.5rem;
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    background: var(--surface);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .profile-card:hover {
+    border-color: var(--accent-border);
+    background: var(--surface2);
+    transform: translateY(-2px);
+  }
+
+  .profile-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--accent);
+    margin: 0 auto 1rem;
+  }
+
+  .profile-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .profile-role {
+    font-size: 12px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+
+  /* ── MAIN APP ── */
+  #app-screen { display: none; flex-direction: column; min-height: 100vh; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .app-wordmark {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text3);
+    text-transform: uppercase;
+  }
+
+  .app-wordmark span { color: var(--accent); }
+
+  .who-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px 4px 4px;
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    background: var(--surface2);
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  .who-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-family: var(--mono);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .topbar-right { display: flex; gap: 8px; align-items: center; }
+
+  .btn-ghost {
+    padding: 6px 14px;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    background: transparent;
+    font-size: 12px;
+    font-family: var(--sans);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+
+  .btn-danger {
+    padding: 6px 14px;
+    border: 1px solid rgba(244,100,95,0.25);
+    border-radius: 6px;
+    background: transparent;
+    font-size: 12px;
+    font-family: var(--sans);
+    color: var(--mandatory);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-danger:hover { background: var(--mandatory-dim); }
+
+  /* Progress */
+  .progress-track {
+    height: 2px;
+    background: var(--border);
+    width: 100%;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+  }
+
+  /* Main content */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .step-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    text-transform: uppercase;
+  }
+
+  .step-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Script card */
+  .script-card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    line-height: 1.8;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  .script-card .mandatory {
+    color: var(--mandatory);
+    font-weight: 500;
+  }
+
+  .script-card .token {
+    display: inline-block;
+    background: rgba(245,165,36,0.1);
+    border: 1px solid rgba(245,165,36,0.25);
+    color: var(--amber);
+    border-radius: 4px;
+    padding: 0 6px;
+    font-family: var(--mono);
+    font-size: 12px;
+    vertical-align: middle;
+  }
+
+  .script-card strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .note-box {
+    margin-top: 1rem;
+    padding: 12px 16px;
+    background: rgba(79,142,247,0.06);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .note-box::before {
+    content: 'NOTE  ';
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Options */
+  .options-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .options-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    padding: 14px 18px;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    background: var(--surface);
+    font-size: 14px;
+    font-family: var(--sans);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.5;
+  }
+
+  .option-btn:hover {
+    background: var(--surface2);
+    border-color: var(--accent-border);
+    color: var(--text);
+  }
+
+  .option-arrow {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--accent);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .option-btn:hover .option-arrow {
+    background: var(--accent-dim);
+    border-color: var(--accent-border);
+  }
+
+  /* Nav */
+  .nav-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding-top: 0.5rem;
+  }
+
+  .nav-row .spacer { flex: 1; }
+
+  /* Done screen */
+  .done-card {
+    background: var(--green-dim);
+    border: 1px solid rgba(62,207,142,0.25);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .done-icon {
+    font-size: 32px;
+    margin-bottom: 1rem;
+    color: var(--green);
+  }
+
+  .done-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+
+  .done-sub { font-size: 14px; color: var(--text2); }
+
+  /* ── EDITOR MODAL ── */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .modal-bg.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    width: min(620px, 100%);
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .modal-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .modal-title { font-size: 15px; font-weight: 500; }
+  .modal-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+  .modal-close {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .modal-close:hover { background: var(--surface2); color: var(--text); }
+
+  .modal-body {
+    overflow-y: auto;
+    padding: 1.25rem 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .edit-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .edit-item-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-locked { background: var(--mandatory-dim); color: var(--mandatory); border: 1px solid var(--mandatory-border); }
+  .tag-global { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,165,36,0.25); }
+
+  .edit-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 7px;
+    border: 1px solid var(--border2);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    font-family: var(--sans);
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 64px;
+    transition: border-color 0.15s;
+  }
+
+  .edit-textarea:focus { outline: none; border-color: var(--accent-border); }
+
+  .edit-textarea:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .btn-primary {
+    padding: 8px 20px;
+    border-radius: 7px;
+    border: 1px solid var(--accent-border);
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 13px;
+    font-family: var(--sans);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-primary:hover { background: rgba(79,142,247,0.2); }
+
+  /* Switch profile link */
+  .switch-link {
+    font-size: 12px;
+    color: var(--text3);
+    cursor: pointer;
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .switch-link:hover { color: var(--text2); }
+
+  @media (max-width: 500px) {
+    .topbar { padding: 10px 16px; }
+    .main { padding: 1.25rem 1rem; }
+    .profile-cards { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PROFILE SELECTION -->
+<div id="profile-screen">
+  <div class="profile-logo"><span>SafeRide</span> · Script Guide</div>
+  <div class="profile-title">Who's taking calls today?</div>
+  <div class="profile-sub">Select your profile to load your personalized script.</div>
+  <div class="profile-cards">
+    <div class="profile-card" onclick="startApp('lee')">
+      <div class="profile-avatar">L</div>
+      <div class="profile-name">Lee</div>
+      <div class="profile-role">Agent</div>
+    </div>
+    <div class="profile-card" onclick="startApp('jill')">
+      <div class="profile-avatar">J</div>
+      <div class="profile-name">Jill</div>
+      <div class="profile-role">Agent</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app-screen">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="app-wordmark"><span>SafeRide</span> · Script</div>
+      <div class="who-badge">
+        <div class="who-dot" id="who-dot">L</div>
+        <span id="who-name">Lee</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-ghost" onclick="openEditor()">Edit my script</button>
+      <button class="btn-ghost" onclick="goBack()" id="back-btn" style="display:none">← Back</button>
+      <button class="btn-danger" onclick="restartCall()">↺ New call</button>
+      <button class="btn-ghost" onclick="switchProfile()">Switch</button>
+    </div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+
+  <div class="main">
+    <div class="step-meta"><div class="step-dot"></div><span id="step-label-text"></span></div>
+    <div class="script-card" id="script-card"></div>
+    <div class="options-label">What happened?</div>
+    <div class="options-list" id="options-list"></div>
+    <div class="nav-row" id="nav-row"></div>
+  </div>
+</div>
+
+<!-- EDITOR MODAL -->
+<div class="modal-bg" id="editor-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="editor-title">Edit script</div>
+        <div class="modal-sub">Locked lines cannot be changed. Global lines affect all profiles.</div>
+      </div>
+      <button class="modal-close" onclick="closeEditor()">✕</button>
+    </div>
+    <div class="modal-body" id="editor-body"></div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeEditor()">Cancel</button>
+      <button class="btn-primary" onclick="saveEditor()">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DEFAULT SCRIPTS ──────────────────────────────────────────────
+const DEFAULTS = {
+  global: {
+    afterHoursRefusalPush: "We do not book new reservations outside of regular business hours to ensure that the transportation providers that fulfill them are readily available."
+  },
+  lee: {
+    greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Lee....",
+    secureVerified: "Thank you, you have been securely verified.",
+    memberRequest: "Are you calling to make a new reservation, about a trip already scheduled, or do you have other questions about your benefit? I'm happy to help you with .... (trigger phrase)",
+    addressConfirm: "Your address on file is ____.",
+    apartment: "Is this an apartment?",
+    gateCode: "Can you please provide any gate codes, building numbers, or special instructions our driver might need to find you easily?",
+    phoneConfirm: "Your phone number on file is ____. If cell phone: Can you still get text messages at this number?",
+    afterHoursRefusal: "Unfortunately, our current policy as outlined by your health plan is to only book these trips during regular business hours. We would be happy to book this for you if you call back during regular business hours.",
+    gmrOffer: "You may be a great fit for our Gas Mileage Reimbursement (GMR) program! You or someone you trust can get paid to drive you to your visits, and you can book same-day for your appointment. You just need to become a compliant driver.",
+    closing: "Once our call ends, you can stay on the line for a short 2-question survey about my service today. If you liked how I helped you, a score of 5 would really help. Just stay on the line after I hang up.",
+    closingEnd: "Thanks for calling SafeRide Health — have a great day."
+  },
+  jill: {
+    greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Jill....",
+    secureVerified: "Thank you, you have been securely verified.",
+    memberRequest: "Are you calling to make a new reservation, about a trip already scheduled, or do you have other questions about your benefit? I'm happy to help you with .... (trigger phrase)",
+    addressConfirm: "Your address on file is ____.",
+    apartment: "Is this an apartment?",
+    gateCode: "Can you please provide any gate codes, building numbers, or special instructions our driver might need to find you easily?",
+    phoneConfirm: "Your phone number on file is ____. If cell phone: Can you still get text messages at this number?",
+    afterHoursRefusal: "Unfortunately, our current policy as outlined by your health plan is to only book these trips during regular business hours. We would be happy to book this for you if you call back during regular business hours.",
+    gmrOffer: "You may be a great fit for our Gas Mileage Reimbursement (GMR) program! You or someone you trust can get paid to drive you to your visits, and you can book same-day for your appointment. You just need to become a compliant driver.",
+    closing: "Once our call ends, you can stay on the line for a short 2-question survey about my service today. If you liked how I helped you, a score of 5 would really help. Just stay on the line after I hang up.",
+    closingEnd: "Thanks for calling SafeRide Health — have a great day."
+  }
+};
+
+// ── STATE ─────────────────────────────────────────────────────────
+let profile = 'lee';
+let scripts = JSON.parse(JSON.stringify(DEFAULTS));
+let history = [];
+let currentStep = 'greeting';
+
+const ALL_STEPS = ['greeting','verifyName','hipaaFull','hipaaWithId','hipaaNoId','memberRequest',
+  'afterHours','afterHoursPush','otherRequest','addressVerify','gateCode','phoneVerify',
+  'gmrCheck','mobilityPrior','mobilityChanges','mobilityNew','mobilityQuestions',
+  'additionalPassengers','bookRide','returnRide','flexUber','flexLyft','flexPickupInfo',
+  'recap','mysaferide','closing','done'];
+
+// ── STEPS ─────────────────────────────────────────────────────────
+function getSteps() {
+  const s = scripts[profile];
+  const g = scripts.global;
+  return {
+    greeting: {
+      label: 'Step 1 — Greeting',
+      html: `"${s.greeting}"`,
+      options: [
+        { label: 'Steven HIPAA verified — profile auto-populated, verify name', next: 'verifyName' },
+        { label: 'No profile / blank page — need full HIPAA verification', next: 'hipaaFull' }
+      ]
+    },
+    verifyName: {
+      label: 'Step 1a — Verify Name',
+      html: `"... may I have your name, please?"<br><br>If name matches profile: <span class="mandatory">"${s.secureVerified}"</span>`,
+      note: 'If name does NOT match the profile, proceed to full HIPAA verification below.',
+      options: [
+        { label: 'Name matched — member verified', next: 'memberRequest' },
+        { label: 'Name did not match — do full HIPAA', next: 'hipaaFull' }
+      ]
+    },
+    hipaaFull: {
+      label: 'Step 1c — Full HIPAA Verification',
+      html: `<span class="mandatory">"Do you have your member ID handy?"</span>`,
+      options: [
+        { label: 'Member has their ID', next: 'hipaaWithId' },
+        { label: 'Member does NOT have their ID', next: 'hipaaNoId' }
+      ]
+    },
+    hipaaWithId: {
+      label: 'Step 1c-i — Verify with Member ID',
+      html: `<span class="mandatory">"May I please have your Name, Member ID, and Date of Birth?"</span><br><br><span class="mandatory">"Thank you for your <span class="token">[Token]</span>, <span class="token">[Token]</span>, and <span class="token">[Token]</span>."</span>`,
+      options: [{ label: 'Verified — continue', next: 'memberRequest' }]
+    },
+    hipaaNoId: {
+      label: 'Step 1c-ii — Verify without Member ID',
+      html: `<span class="mandatory">"May I please have your Name, Date of Birth, and Address?"</span><br><br><span class="mandatory">"Thank you for your <span class="token">[Token]</span>, <span class="token">[Token]</span>, and <span class="token">[Token]</span>."</span>`,
+      options: [{ label: 'Verified — continue', next: 'memberRequest' }]
+    },
+    memberRequest: {
+      label: 'Step 2 — Member Request',
+      html: `"${s.memberRequest}"`,
+      note: 'New Ride → "Booking a new ride" | Benefit Balance → "Ride balance/additional rides" | General → "Depends on… covered by your health plan" | Complaints → "Fill out a complaint form / Connect you with member services" | After-hours NEMT → cannot book, explain policy.',
+      options: [
+        { label: 'New reservation', next: 'addressVerify' },
+        { label: 'After-hours NEMT booking attempt', next: 'afterHours' },
+        { label: 'Other (benefit, complaint, general)', next: 'otherRequest' }
+      ]
+    },
+    afterHours: {
+      label: 'After-Hours Policy',
+      html: `"${s.afterHoursRefusal}"`,
+      options: [
+        { label: 'Member accepts — close call', next: 'closing' },
+        { label: 'Member pushes back', next: 'afterHoursPush' }
+      ]
+    },
+    afterHoursPush: {
+      label: 'After-Hours — Member pushes back',
+      html: `"${g.afterHoursRefusalPush}"`,
+      note: 'This is a Global line — it applies to both profiles.',
+      options: [{ label: 'Member accepts — close call', next: 'closing' }]
+    },
+    otherRequest: {
+      label: 'Other Requests',
+      html: `Handle the member's request per the relevant SOP.<br><br>Transfers to Alt Trans dept: <strong>833-944-0517</strong><br><br>For complicated / multileg trips, use the discard phrase <span class="mandatory">"complete this process"</span> so OAI does not grade the call.`,
+      options: [{ label: 'Request handled — close call', next: 'closing' }]
+    },
+    addressVerify: {
+      label: 'Step 3 — Address Verification',
+      html: `"${s.addressConfirm}"<br>"${s.apartment}"`,
+      options: [
+        { label: 'Standard address — no apartment', next: 'phoneVerify' },
+        { label: 'Apartment — ask for gate codes / building info', next: 'gateCode' }
+      ]
+    },
+    gateCode: {
+      label: 'Step 3a — Gate Code / Building Info',
+      html: `"${s.gateCode}"`,
+      options: [{ label: 'Info gathered — continue to phone', next: 'phoneVerify' }]
+    },
+    phoneVerify: {
+      label: 'Step 3b — Phone Verification',
+      html: `"${s.phoneConfirm}"`,
+      note: 'If you update a phone number in the member profile, remind them to also update with their health plan or it will revert.',
+      options: [{ label: 'Phone confirmed — check GMR', next: 'gmrCheck' }]
+    },
+    gmrCheck: {
+      label: 'Step 4 — GMR Offer',
+      html: `"${s.gmrOffer}"`,
+      note: 'If yes → direct to saferidehealth.com/mileage-reimbursement-driver. Use trigger phrase "To sign up your driver..." when sending to website. If no → move on.',
+      options: [
+        { label: 'Interested in GMR — skip mobility, go to passengers', next: 'additionalPassengers' },
+        { label: 'Not interested — proceed to mobility assessment', next: 'mobilityPrior' }
+      ]
+    },
+    mobilityPrior: {
+      label: 'Step 5 — Mobility Assessment',
+      html: `<span class="mandatory">a. "Have you ever taken a trip with SafeRide Health before?"</span>`,
+      options: [
+        { label: 'Yes — has ridden before', next: 'mobilityChanges' },
+        { label: 'No — first ride', next: 'mobilityNew' }
+      ]
+    },
+    mobilityChanges: {
+      label: 'Step 5b — Mobility Changes',
+      html: `<span class="mandatory">"Have there been any changes to your mobility since your last ride?"</span>`,
+      options: [
+        { label: 'Yes — changes in mobility', next: 'mobilityQuestions' },
+        { label: 'No changes — skip to Additional Passengers', next: 'additionalPassengers' }
+      ]
+    },
+    mobilityNew: {
+      label: 'Step 5d — New Member Mobility',
+      html: `<span class="mandatory">"Are you able to get in and out of a vehicle safely on your own?"</span><br><br><span class="mandatory">"Will you be taking any assistive devices with you to this appointment?"</span><br><br>Plans allowing D2D ONLY: <span class="mandatory">"Will you be needing any special driver assistance?"</span>`,
+      note: 'If combined weight of wheelchair/scooter + member is 600 lbs or more, or width is 34"+ → book WCX, otherwise WCV. Add height/weight, device type, steps/ramp to Member Notes (Visible to Transport).',
+      options: [{ label: 'Mobility info gathered — continue', next: 'additionalPassengers' }]
+    },
+    mobilityQuestions: {
+      label: 'Step 5c — Mobility Change Questions',
+      html: `<span class="mandatory">"Are you able to get in and out of a vehicle safely on your own?"</span><br><br><span class="mandatory">"Will you be taking any assistive devices with you to this appointment?"</span><br><br>Plans allowing D2D ONLY: <span class="mandatory">"Will you be needing any special driver assistance?"</span>`,
+      note: 'Add all device info to Member Notes (Visible to Transport): height/weight of member, weight of device, device type (manual/electric/wc/scooter), steps or ramp.',
+      options: [{ label: 'Mobility info gathered — continue', next: 'additionalPassengers' }]
+    },
+    additionalPassengers: {
+      label: 'Step 6 — Additional Passengers',
+      html: `"Any additional passengers?"`,
+      options: [
+        { label: 'No additional passengers — proceed to booking', next: 'bookRide' },
+        { label: 'Has additional passengers — note and proceed', next: 'bookRide' }
+      ]
+    },
+    bookRide: {
+      label: 'Step 7 — Book a Ride',
+      html: `<strong>For SHP &amp; DHP &amp; CFHP Only:</strong><br><span class="mandatory">"Can you confirm that you have no other transportation available?"</span><br><br><strong>Appointment details:</strong><br>"What kind of doctor will you be seeing for this appointment?"<br>"What is the date of your appointment?"<br>"Will we be picking you up from your home address on file?"<br>"What time would you like to Arrive for your appointment?"`,
+      note: 'SHP/DHP/Community First: use approved provider box — get doctor name, facility name, address, phone. Priority Medicaid / Buckeye / Sunflower / Meridian: put name & facility directly in the required field in the booking layer instead.',
+      options: [{ label: 'Ride booked — ask about return trip', next: 'returnRide' }]
+    },
+    returnRide: {
+      label: 'Step 8 — Return Ride',
+      html: `"Will you need a return ride home?"<br><br>If yes:<br>"Do you know when your appointment will be over or would you prefer I schedule a Flexible Pickup for you?"`,
+      note: 'If member asks "What is a Flex Ride?": "A Flex Ride is our new word for Will-Call. It functions the same as before."',
+      options: [
+        { label: 'Knows end time — book return ride', next: 'flexPickupInfo' },
+        { label: 'Flexible Pickup — Uber', next: 'flexUber' },
+        { label: 'Flexible Pickup — Lyft', next: 'flexLyft' },
+        { label: 'No return ride needed', next: 'recap' }
+      ]
+    },
+    flexUber: {
+      label: 'Flexible Pickup — Uber',
+      html: `"You'll get a text message when you arrive at your appointment. Just respond to that text with the word READY to activate your Flexible Pickup. You will get a text with your driver details and ETA without having to give us a call. Of course, you can still call us and we can activate it for you."`,
+      options: [{ label: 'Explained — continue to recap', next: 'recap' }]
+    },
+    flexLyft: {
+      label: 'Flexible Pickup — Lyft',
+      html: `"You'll get a text message when you arrive at your appointment. Just follow the link in the text to activate your Flexible Pickup. You will get a text with your driver details and ETA without having to give us a call. Of course, you can still call us and we can activate it for you."`,
+      options: [{ label: 'Explained — continue to recap', next: 'recap' }]
+    },
+    flexPickupInfo: {
+      label: 'NEMT Return / Flexible Pickup',
+      html: `"You'll need to call us again after your appointment and we'll notify the provider that you're ready, but it can take up to an hour for your driver to arrive."`,
+      options: [{ label: 'Explained — continue to recap', next: 'recap' }]
+    },
+    recap: {
+      label: 'Step 9 — Recap & Notifications',
+      html: `"Do you need a recap of the ride IDs &amp; pickup time, or would you rather get them from your text?"<br><br>If they ask: "To recap, this ride request is for <span class="token">[date]</span>, we're picking you up at <span class="token">[pickup time]</span>, and your Ride IDs are <span class="token">[ride IDs]</span>."<br><br><strong>(UBER/LYFT):</strong> "Expect text notifications on the day of your appointment. Make sure you're outside waiting before your pick-up time — they'll only wait up to 5 minutes once they arrive. Please don't leave anything behind, as SafeRide cannot assist with lost items."<br><br><strong>(NEMT):</strong> "Your driver may arrive up to 15 minutes before or after your pick-up time. If they're late or don't arrive, call SafeRide Health directly for assistance."`,
+      options: [
+        { label: 'Offer MySafeRide app', next: 'mysaferide' },
+        { label: 'Skip app offer — proceed to closing', next: 'closing' }
+      ]
+    },
+    mysaferide: {
+      label: 'MySafeRide App Offer',
+      html: `"Would you like me to send you the link to download the MySafeRide App to book and manage your future rides?"<br><br>If yes: "Great! All I need is an email address to send you the link and get you started."`,
+      note: 'To send link: go to "Member Portal" tab on member profile, enter their email address. They will receive instructions on how to sign up.',
+      options: [
+        { label: 'Link sent — proceed to closing', next: 'closing' },
+        { label: 'Not interested — proceed to closing', next: 'closing' }
+      ]
+    },
+    closing: {
+      label: 'Closing',
+      html: `"${s.closing}"<br><br>"${s.closingEnd}"`,
+      options: [{ label: 'Call complete ✓', next: 'done' }]
+    },
+    done: {
+      label: 'Complete',
+      html: null,
+      options: []
+    }
+  };
+}
+
+// ── RENDER ────────────────────────────────────────────────────────
+function render() {
+  const steps = getSteps();
+  const step = steps[currentStep];
+  const idx = ALL_STEPS.indexOf(currentStep);
+  const total = ALL_STEPS.length - 1;
+
+  document.getElementById('progress-fill').style.width = `${Math.round((idx / total) * 100)}%`;
+  document.getElementById('step-label-text').textContent = step.label;
+  document.getElementById('back-btn').style.display = history.length > 0 ? '' : 'none';
+
+  const card = document.getElementById('script-card');
+  if (currentStep === 'done') {
+    card.innerHTML = `<div class="done-card"><div class="done-icon">✓</div><div class="done-title">Call complete</div><div class="done-sub">Ready for your next call.</div></div>`;
+  } else {
+    let html = step.html;
+    if (step.note) html += `<div class="note-box">${step.note}</div>`;
+    card.innerHTML = html;
+  }
+
+  const ol = document.getElementById('options-list');
+  ol.innerHTML = step.options.map(opt =>
+    `<button class="option-btn" onclick="choose('${opt.next}')"><span class="option-arrow">›</span>${opt.label}</button>`
+  ).join('');
+}
+
+function choose(next) {
+  history.push(currentStep);
+  currentStep = next;
+  render();
+}
+
+function goBack() {
+  if (history.length > 0) { currentStep = history.pop(); render(); }
+}
+
+function restartCall() {
+  history = [];
+  currentStep = 'greeting';
+  render();
+}
+
+// ── PROFILE ───────────────────────────────────────────────────────
+function startApp(p) {
+  profile = p;
+  loadFromStorage();
+  document.getElementById('who-dot').textContent = p === 'lee' ? 'L' : 'J';
+  document.getElementById('who-name').textContent = p === 'lee' ? 'Lee' : 'Jill';
+  document.getElementById('profile-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'flex';
+  history = [];
+  currentStep = 'greeting';
+  render();
+}
+
+function switchProfile() {
+  document.getElementById('app-screen').style.display = 'none';
+  document.getElementById('profile-screen').style.display = 'flex';
+}
+
+// ── LOCAL STORAGE ─────────────────────────────────────────────────
+function loadFromStorage() {
+  try {
+    const leeData = localStorage.getItem('srscript_lee');
+    const jillData = localStorage.getItem('srscript_jill');
+    const globalData = localStorage.getItem('srscript_global');
+    if (leeData) scripts.lee = { ...DEFAULTS.lee, ...JSON.parse(leeData) };
+    if (jillData) scripts.jill = { ...DEFAULTS.jill, ...JSON.parse(jillData) };
+    if (globalData) scripts.global = { ...DEFAULTS.global, ...JSON.parse(globalData) };
+  } catch(e) {}
+}
+
+function saveToStorage() {
+  try {
+    localStorage.setItem('srscript_lee', JSON.stringify(scripts.lee));
+    localStorage.setItem('srscript_jill', JSON.stringify(scripts.jill));
+    localStorage.setItem('srscript_global', JSON.stringify(scripts.global));
+  } catch(e) {}
+}
+
+// ── EDITOR ────────────────────────────────────────────────────────
+const EDIT_FIELDS = [
+  { key: 'greeting',             label: 'Greeting',                          scope: 'profile', mandatory: false },
+  { key: 'memberRequest',        label: 'Member Request intro',              scope: 'profile', mandatory: false },
+  { key: 'addressConfirm',       label: 'Address confirmation',              scope: 'profile', mandatory: false },
+  { key: 'apartment',            label: 'Apartment question',                scope: 'profile', mandatory: false },
+  { key: 'gateCode',             label: 'Gate code / building info request', scope: 'profile', mandatory: false },
+  { key: 'phoneConfirm',         label: 'Phone confirmation',                scope: 'profile', mandatory: false },
+  { key: 'afterHoursRefusal',    label: 'After-hours refusal (1st response)',scope: 'profile', mandatory: false },
+  { key: 'afterHoursRefusalPush',label: 'After-hours — member pushes back',  scope: 'global',  mandatory: false },
+  { key: 'gmrOffer',             label: 'GMR offer language',                scope: 'profile', mandatory: false },
+  { key: 'closing',              label: 'Closing (survey mention)',           scope: 'profile', mandatory: false },
+  { key: 'closingEnd',           label: 'Closing sign-off line',             scope: 'profile', mandatory: false },
+  { key: 'secureVerified',       label: 'Secure Verified phrase',            scope: 'profile', mandatory: true  },
+];
+
+function openEditor() {
+  document.getElementById('editor-title').textContent = `Edit script — ${profile === 'lee' ? 'Lee' : 'Jill'}`;
+  const body = document.getElementById('editor-body');
+  body.innerHTML = EDIT_FIELDS.map(f => {
+    const val = f.scope === 'global' ? scripts.global[f.key] : scripts[profile][f.key];
+    const locked = f.mandatory ? 'disabled' : '';
+    const lockTag = f.mandatory ? `<span class="tag tag-locked">MANDATORY · LOCKED</span>` : '';
+    const globalTag = f.scope === 'global' ? `<span class="tag tag-global">GLOBAL — affects both</span>` : '';
+    return `<div class="edit-item">
+      <div class="edit-item-label">${f.label} ${lockTag}${globalTag}</div>
+      <textarea class="edit-textarea" id="ef_${f.key}" rows="3" ${locked}>${val}</textarea>
+    </div>`;
+  }).join('');
+  document.getElementById('editor-modal').classList.add('open');
+}
+
+function closeEditor() {
+  document.getElementById('editor-modal').classList.remove('open');
+}
+
+function saveEditor() {
+  EDIT_FIELDS.forEach(f => {
+    if (f.mandatory) return;
+    const el = document.getElementById(`ef_${f.key}`);
+    if (!el) return;
+    if (f.scope === 'global') scripts.global[f.key] = el.value;
+    else scripts[profile][f.key] = el.value;
+  });
+  saveToStorage();
+  closeEditor();
+  render();
+}
+
+// init
+loadFromStorage();
+</script>
+</body>
+</html>
