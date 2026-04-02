@@ -489,7 +489,14 @@ const ALL_STEPS = ['greeting','hipaaFull','hipaaWithId','hipaaNoId','memberReque
   'additionalPassengers','bookRide','returnRide','flexUber','flexLyft','flexPickupInfo',
   'recap','mysaferide','closing','done'];
 
-// ── SCREEN ────────────────────────────────────────────────────────
+// ── INTERCEPT BROWSER BACK BUTTON ────────────────────────────────
+history_api_push = () => window.history.pushState(null, '', window.location.href);
+history_api_push();
+window.addEventListener('popstate', () => {
+  history_api_push();
+  const appActive = document.getElementById('app-screen').classList.contains('active');
+  if (appActive && history.length > 0) goBack();
+});
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
