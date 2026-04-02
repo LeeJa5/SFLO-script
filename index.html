@@ -233,6 +233,11 @@
       <div class="profile-name">Portia</div>
       <div class="profile-role">Agent</div>
     </div>
+    <div class="profile-card" onclick="selectProfile('guest')">
+      <div class="profile-avatar" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);color:var(--text3);">G</div>
+      <div class="profile-name" style="color:var(--text2);">Guest</div>
+      <div class="profile-role">View only</div>
+    </div>
   </div>
 </div>
 
@@ -277,7 +282,7 @@
       </div>
     </div>
     <div class="topbar-right">
-      <button class="btn-ghost" onclick="requestEdit()">Edit my script</button>
+      <button class="btn-ghost" id="edit-script-btn" onclick="requestEdit()">Edit my script</button>
       <button class="btn-ghost" id="back-btn" style="display:none" onclick="goBack()">← Back</button>
       <button class="btn-danger" onclick="restartCall()">↺ New call</button>
       <button class="btn-ghost" onclick="showScreen('profile-screen')">Switch</button>
@@ -475,6 +480,22 @@ document.getElementById('logo-trigger').addEventListener('click', () => {
 function selectProfile(p) {
   profile = p;
   loadFromStorage();
+
+  if (p === 'guest') {
+    // Use clean defaults, skip PIN entirely
+    scripts.guest = JSON.parse(JSON.stringify(DEFAULTS.lee));
+    scripts.guest.greeting = "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is ....";
+    document.getElementById('who-dot').textContent = 'G';
+    document.getElementById('who-dot').style.cssText = 'width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:10px;font-family:var(--mono);color:var(--text3);font-weight:500;';
+    document.getElementById('who-name').textContent = 'Guest';
+    document.getElementById('edit-script-btn').style.display = 'none';
+    launchApp();
+    return;
+  }
+
+  document.getElementById('edit-script-btn').style.display = '';
+  document.getElementById('who-dot').style.cssText = '';
+
   const label = p === 'lee' ? 'Lee' : 'Portia';
   const initial = p === 'lee' ? 'L' : 'P';
   document.getElementById('pin-avatar').textContent = initial;
@@ -668,14 +689,14 @@ function resetPin(p) {
 
 // ── STEPS ─────────────────────────────────────────────────────────
 function getSteps() {
-  const s = scripts[profile];
+  const s = profile === 'guest' ? scripts.guest : scripts[profile];
   const g = scripts.global;
   return {
     greeting: {
       label: 'Step 1 — Greeting',
       html: `"${s.greeting}"`,
       options: [
-        { label: 'CX is HIPAA verified — profile auto-populated, verify name', next: 'verifyName' },
+        { label: 'Steven HIPAA verified — profile auto-populated, verify name', next: 'verifyName' },
         { label: 'No profile / blank page — need full HIPAA verification', next: 'hipaaFull' }
       ]
     },
