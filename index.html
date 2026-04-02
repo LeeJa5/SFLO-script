@@ -454,7 +454,7 @@ let cpBuffer = '';
 let cpStage = 'new';
 let cpFirst = '';
 
-const ALL_STEPS = ['greeting','verifyName','hipaaFull','hipaaWithId','hipaaNoId','memberRequest',
+const ALL_STEPS = ['greeting','hipaaFull','hipaaWithId','hipaaNoId','memberRequest',
   'afterHours','afterHoursPush','otherRequest','addressVerify','gateCode','phoneVerify',
   'gmrCheck','mobilityPrior','mobilityChanges','mobilityNew','mobilityQuestions',
   'additionalPassengers','bookRide','returnRide','flexUber','flexLyft','flexPickupInfo',
@@ -694,19 +694,12 @@ function getSteps() {
   return {
     greeting: {
       label: 'Step 1 — Greeting',
-      html: `"${s.greeting}"`,
-      options: [
-        { label: 'HIPAA verified — profile auto-populated, verify name', next: 'verifyName' },
-        { label: 'No profile / blank page — need full HIPAA verification', next: 'hipaaFull' }
-      ]
-    },
-    verifyName: {
-      label: 'Step 1a — Verify Name',
-      html: `"... may I have your name, please?"<br><br>If name matches profile: <span class="mandatory">"${s.secureVerified}"</span>`,
-      note: 'If name does NOT match the profile, proceed to full HIPAA verification.',
+      html: `"${s.greeting} May I have your name, please?"<br><br>If name matches profile: <span class="mandatory">"${s.secureVerified}"</span>`,
+      note: 'If HIPAA verified, the member profile will pop up automatically. If nothing or a blank page appears, you will need to do a full HIPAA verification.',
       options: [
         { label: 'Name matched — member verified', next: 'memberRequest' },
-        { label: 'Name did not match — do full HIPAA', next: 'hipaaFull' }
+        { label: 'Name did not match — do full HIPAA', next: 'hipaaFull' },
+        { label: 'No profile / blank page — do full HIPAA', next: 'hipaaFull' }
       ]
     },
     hipaaFull: {
