@@ -586,9 +586,6 @@ function submitPin() {
   } else if (pinMode === 'verify') {
     if (pinBuffer === stored) { launchApp(); }
     else { pinError(); }
-  } else if (pinMode === 'edit-verify') {
-    if (pinBuffer === stored) { showScreen('app-screen'); openEditor(); }
-    else { pinError(); }
   }
 }
 
@@ -607,17 +604,7 @@ function launchApp() {
 
 // ── REQUEST EDIT ──────────────────────────────────────────────────
 function requestEdit() {
-  const stored = localStorage.getItem(`srpin_${profile}`);
-  if (!stored) { openEditor(); return; }
-  pinBuffer = '';
-  updateDots('pd', '');
-  document.getElementById('pin-error').textContent = '';
-  const label = profile === 'lee' ? 'Lee' : 'Portia';
-  document.getElementById('pin-title').textContent = 'Confirm your PIN';
-  document.getElementById('pin-sub').textContent = 'Enter your PIN to unlock the script editor.';
-  document.getElementById('pin-avatar').textContent = profile === 'lee' ? 'L' : 'P';
-  pinMode = 'edit-verify';
-  showScreen('pin-screen');
+  openEditor();
 }
 
 // ── CHANGE PIN ────────────────────────────────────────────────────
