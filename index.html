@@ -198,7 +198,13 @@
   .btn-reset { padding: 5px 12px; border-radius: 5px; border: 1px solid var(--mandatory-border); background: var(--mandatory-dim); color: var(--mandatory); font-size: 11px; font-family: var(--sans); cursor: pointer; transition: all 0.15s; }
   .btn-reset:hover { background: rgba(244,100,95,0.2); }
 
-  .admin-input { width: 100%; padding: 10px 12px; border-radius: 7px; border: 1px solid var(--border2); background: var(--bg); color: var(--text); font-size: 13px; font-family: var(--mono); transition: border-color 0.15s; }
+  .token-editor { display: flex; flex-direction: column; gap: 6px; }
+  .trigger-chip { display: flex; align-items: center; gap: 6px; padding: 7px 12px; background: var(--mandatory-dim); border: 1px solid var(--mandatory-border); border-radius: 6px; color: var(--mandatory); font-size: 13px; font-weight: 500; cursor: not-allowed; user-select: none; }
+  .trigger-chip-icon { font-size: 11px; opacity: 0.7; }
+  .token-preview { margin-top: 4px; padding: 8px 12px; background: var(--surface2); border-radius: 6px; border: 1px solid var(--border); font-size: 13px; color: var(--text); line-height: 1.6; min-height: 36px; }
+  .token-before, .token-after { rows: 2; min-height: 48px; }
+
+
   .admin-input:focus { outline: none; border-color: var(--accent-border); }
 
   .admin-msg { font-size: 12px; font-family: var(--mono); min-height: 18px; margin-top: 6px; }
@@ -424,14 +430,14 @@ const DEFAULTS = {
     greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Lee....",
     secureVerified: "Thank you, you have been securely verified.",
     memberRequest: "Are you calling to make a new reservation, about a trip already scheduled, or do you have other questions about your benefit? I'm happy to help you with .... (trigger phrase)",
-    memberRequestNewRide: '"I understand, I can help you with',
-    memberRequestBenefit: '"Of course, let me help you with your',
-    memberRequestGeneral: '"Happy to help — that',
-    memberRequestMysaferide: '"Sure, I can help you with the',
-    memberRequestComplaints: '"I\'m sorry to hear that, I can help you',
-    memberRequestTransfer: '"Absolutely, let me get you to the',
-    memberRequestFraud: '"I understand, we will',
-    memberRequestCantComplete: '"I\'m sorry I wasn\'t able to assist you fully today, but I will',
+    memberRequestNewRide: '"I understand, I can help you with |TRIGGER|."',
+    memberRequestBenefit: '"Of course, let me help you with your |TRIGGER|."',
+    memberRequestGeneral: '"Happy to help — that |TRIGGER|."',
+    memberRequestMysaferide: '"Sure, I can help you with the |TRIGGER|."',
+    memberRequestComplaints: '"I\'m sorry to hear that, I can help you |TRIGGER|."',
+    memberRequestTransfer: '"Absolutely, let me get you to the |TRIGGER|."',
+    memberRequestFraud: '"I understand, we will |TRIGGER|."',
+    memberRequestCantComplete: '"I\'m sorry I wasn\'t able to assist you fully today, but I will |TRIGGER|."',
     addressConfirm: "Your address on file is ____.",
     apartment: "Is this an apartment?",
     gateCode: "Can you please provide any gate codes, building numbers, or special instructions our driver might need to find you easily?",
@@ -445,14 +451,14 @@ const DEFAULTS = {
     greeting: "Thank you for calling SafeRide Health, your transportation benefit provided by [Health Plan Name]. My name is Portia....",
     secureVerified: "Thank you, you have been securely verified.",
     memberRequest: "Are you calling to make a new reservation, about a trip already scheduled, or do you have other questions about your benefit? I'm happy to help you with .... (trigger phrase)",
-    memberRequestNewRide: '"I understand, I can help you with',
-    memberRequestBenefit: '"Of course, let me help you with your',
-    memberRequestGeneral: '"Happy to help — that',
-    memberRequestMysaferide: '"Sure, I can help you with the',
-    memberRequestComplaints: '"I\'m sorry to hear that, I can help you',
-    memberRequestTransfer: '"Absolutely, let me get you to the',
-    memberRequestFraud: '"I understand, we will',
-    memberRequestCantComplete: '"I\'m sorry I wasn\'t able to assist you fully today, but I will',
+    memberRequestNewRide: '"I understand, I can help you with |TRIGGER|."',
+    memberRequestBenefit: '"Of course, let me help you with your |TRIGGER|."',
+    memberRequestGeneral: '"Happy to help — that |TRIGGER|."',
+    memberRequestMysaferide: '"Sure, I can help you with the |TRIGGER|."',
+    memberRequestComplaints: '"I\'m sorry to hear that, I can help you |TRIGGER|."',
+    memberRequestTransfer: '"Absolutely, let me get you to the |TRIGGER|."',
+    memberRequestFraud: '"I understand, we will |TRIGGER|."',
+    memberRequestCantComplete: '"I\'m sorry I wasn\'t able to assist you fully today, but I will |TRIGGER|."',
     addressConfirm: "Your address on file is ____.",
     apartment: "Is this an apartment?",
     gateCode: "Can you please provide any gate codes, building numbers, or special instructions our driver might need to find you easily?",
@@ -760,7 +766,7 @@ function getSteps() {
     },
     triageNewRide: {
       label: 'Step 2 — New Ride',
-      html: `${s.memberRequestNewRide} <span class="mandatory">booking a new ride</span>."`,
+      html: `${triageHtml(s.memberRequestNewRide, 'booking a new ride')}`,
       note: 'Continue into the booking flow. After-hours check will come up naturally during booking.',
       options: [
         { label: 'Scheduling during business hours — continue', next: 'addressVerify' },
@@ -769,37 +775,37 @@ function getSteps() {
     },
     triageBenefit: {
       label: 'Step 2 — Benefit Balance',
-      html: `${s.memberRequestBenefit} <span class="mandatory">ride balance / additional rides</span>."`,
+      html: `${triageHtml(s.memberRequestBenefit, 'ride balance / additional rides')}`,
       options: [{ label: 'Handled — close call', next: 'closing' }]
     },
     triageGeneral: {
       label: 'Step 2 — General Question',
-      html: `${s.memberRequestGeneral} <span class="mandatory">depends on... covered by your health plan</span>."`,
+      html: `${triageHtml(s.memberRequestGeneral, 'depends on... covered by your health plan')}`,
       options: [{ label: 'Handled — close call', next: 'closing' }]
     },
     triageMysaferide: {
       label: 'Step 2 — MySafeRide App',
-      html: `${s.memberRequestMysaferide} <span class="mandatory">MySafeRide App</span>."<br><br><span style="color:var(--amber);font-weight:500;">⚠ WIP</span> — For more information about the SafeRide app, see the SOP page.`,
+      html: `${triageHtml(s.memberRequestMysaferide, 'MySafeRide App')}<br><br><span style="color:var(--amber);font-weight:500;">⚠ WIP</span> — For more information about the SafeRide app, see the SOP page.`,
       options: [{ label: 'Handled — close call', next: 'closing' }]
     },
     triageComplaints: {
       label: 'Step 2 — Complaints',
-      html: `${s.memberRequestComplaints} <span class="mandatory">fill out a complaint form / connect you with member services... report</span>."`,
+      html: `${triageHtml(s.memberRequestComplaints, 'fill out a complaint form / connect you with member services... report')}`,
       options: [{ label: 'Handled — close call', next: 'closing' }]
     },
     triageTransfer: {
       label: 'Step 2 — Transfer to Correct Department',
-      html: `${s.memberRequestTransfer} <span class="mandatory">correct department</span>."<br><br>Alt Trans dept: <strong>833-944-0517</strong>`,
+      html: `${triageHtml(s.memberRequestTransfer, 'correct department')}<br><br>Alt Trans dept: <strong>833-944-0517</strong>`,
       options: [{ label: 'Transferred — close call', next: 'closing' }]
     },
     triageFraud: {
       label: 'Step 2 — Fraud',
-      html: `${s.memberRequestFraud} <span class="mandatory">investigate</span>."`,
+      html: `${triageHtml(s.memberRequestFraud, 'investigate')}`,
       options: [{ label: 'Handled — close call', next: 'closing' }]
     },
     triageCantComplete: {
       label: 'Step 2 — Can\'t Complete Request',
-      html: `${s.memberRequestCantComplete} <span class="mandatory">complete this process</span>."`,
+      html: `${triageHtml(s.memberRequestCantComplete, 'complete this process')}`,
       note: 'Using "complete this process" ensures OAI does not grade this call.',
       options: [{ label: 'Discard phrase used — close call', next: 'closing' }]
     },
@@ -971,55 +977,118 @@ function goBack() { if (history.length > 0) { currentStep = history.pop(); rende
 function restartCall() { history = []; currentStep = 'greeting'; render(); }
 
 // ── EDITOR ────────────────────────────────────────────────────────
+// Fields without a trigger use a plain textarea.
+// Fields with a trigger use the split before/after model — the trigger chip is locked.
 const EDIT_FIELDS = [
-  { key: 'greeting',              label: 'Greeting',                           scope: 'profile', mandatory: false },
-  { key: 'memberRequest',         label: 'Member Request intro',               scope: 'profile', mandatory: false },
-  { key: 'memberRequestNewRide',  label: 'New ride — intro before trigger',    scope: 'profile', mandatory: false },
-  { key: 'memberRequestBenefit',  label: 'Benefit balance — intro before trigger', scope: 'profile', mandatory: false },
-  { key: 'memberRequestGeneral',  label: 'General — intro before trigger',     scope: 'profile', mandatory: false },
-  { key: 'memberRequestMysaferide', label: 'MySafeRide — intro before trigger', scope: 'profile', mandatory: false },
-  { key: 'memberRequestComplaints', label: 'Complaints — intro before trigger', scope: 'profile', mandatory: false },
-  { key: 'memberRequestTransfer', label: 'Transfer — intro before trigger',    scope: 'profile', mandatory: false },
-  { key: 'memberRequestFraud',    label: 'Fraud — intro before trigger',       scope: 'profile', mandatory: false },
-  { key: 'memberRequestCantComplete', label: 'Can\'t complete — intro before trigger', scope: 'profile', mandatory: false },
-  { key: 'addressConfirm',        label: 'Address confirmation',               scope: 'profile', mandatory: false },
-  { key: 'apartment',             label: 'Apartment question',                 scope: 'profile', mandatory: false },
-  { key: 'gateCode',              label: 'Gate code / building info request',  scope: 'profile', mandatory: false },
-  { key: 'phoneConfirm',          label: 'Phone confirmation',                 scope: 'profile', mandatory: false },
-  { key: 'afterHoursRefusal',     label: 'After-hours refusal (1st response)', scope: 'profile', mandatory: false },
-  { key: 'afterHoursRefusalPush', label: 'After-hours — member pushes back',   scope: 'global',  mandatory: false },
-  { key: 'gmrOffer',              label: 'GMR offer language',                 scope: 'profile', mandatory: false },
-  { key: 'closing',               label: 'Closing (survey mention)',           scope: 'profile', mandatory: false },
-  { key: 'closingEnd',            label: 'Closing sign-off line',              scope: 'profile', mandatory: false },
-  { key: 'secureVerified',        label: 'Secure Verified phrase',             scope: 'profile', mandatory: true  },
+  { key: 'greeting',                label: 'Greeting',                          scope: 'profile', mandatory: false },
+  { key: 'memberRequest',           label: 'Member Request intro',              scope: 'profile', mandatory: false },
+  { key: 'memberRequestNewRide',    label: 'New ride',                          scope: 'profile', mandatory: false, trigger: 'booking a new ride' },
+  { key: 'memberRequestBenefit',    label: 'Benefit balance',                   scope: 'profile', mandatory: false, trigger: 'ride balance / additional rides' },
+  { key: 'memberRequestGeneral',    label: 'General question',                  scope: 'profile', mandatory: false, trigger: 'depends on... covered by your health plan' },
+  { key: 'memberRequestMysaferide', label: 'MySafeRide App',                    scope: 'profile', mandatory: false, trigger: 'MySafeRide App' },
+  { key: 'memberRequestComplaints', label: 'Complaints',                        scope: 'profile', mandatory: false, trigger: 'fill out a complaint form / connect you with member services... report' },
+  { key: 'memberRequestTransfer',   label: 'Transfer to correct dept',          scope: 'profile', mandatory: false, trigger: 'correct department' },
+  { key: 'memberRequestFraud',      label: 'Fraud',                             scope: 'profile', mandatory: false, trigger: 'investigate' },
+  { key: 'memberRequestCantComplete', label: 'Can\'t complete request',         scope: 'profile', mandatory: false, trigger: 'complete this process' },
+  { key: 'addressConfirm',          label: 'Address confirmation',              scope: 'profile', mandatory: false },
+  { key: 'apartment',               label: 'Apartment question',                scope: 'profile', mandatory: false },
+  { key: 'gateCode',                label: 'Gate code / building info request', scope: 'profile', mandatory: false },
+  { key: 'phoneConfirm',            label: 'Phone confirmation',                scope: 'profile', mandatory: false },
+  { key: 'afterHoursRefusal',       label: 'After-hours refusal (1st response)',scope: 'profile', mandatory: false },
+  { key: 'afterHoursRefusalPush',   label: 'After-hours — member pushes back',  scope: 'global',  mandatory: false },
+  { key: 'gmrOffer',                label: 'GMR offer language',                scope: 'profile', mandatory: false },
+  { key: 'closing',                 label: 'Closing (survey mention)',          scope: 'profile', mandatory: false },
+  { key: 'closingEnd',              label: 'Closing sign-off line',             scope: 'profile', mandatory: false },
+  { key: 'secureVerified',          label: 'Secure Verified phrase',            scope: 'profile', mandatory: true  },
 ];
+
+// Split a stored value into before/after around the trigger sentinel "|TRIGGER|"
+function splitTrigger(val) {
+  const idx = val.indexOf('|TRIGGER|');
+  if (idx === -1) return { before: val, after: '' };
+  return { before: val.slice(0, idx), after: val.slice(idx + 9) };
+}
+
+function joinTrigger(before, after) {
+  return before + '|TRIGGER|' + after;
+}
+
+// Render the script card html for a triage field using stored value
+function triageHtml(val, trigger) {
+  const { before, after } = splitTrigger(val);
+  return `${before}<span class="mandatory">${trigger}</span>${after}`;
+}
 
 function openEditor() {
   document.getElementById('editor-title').textContent = `Edit script — ${profile === 'lee' ? 'Lee' : 'Portia'}`;
   document.getElementById('editor-body').innerHTML = EDIT_FIELDS.map(f => {
-    const val = f.scope === 'global' ? scripts.global[f.key] : scripts[profile][f.key];
-    const locked = f.mandatory ? 'disabled' : '';
+    const raw = f.scope === 'global' ? scripts.global[f.key] : scripts[profile][f.key];
     const lockTag = f.mandatory ? `<span class="tag tag-locked">MANDATORY · LOCKED</span>` : '';
     const globalTag = f.scope === 'global' ? `<span class="tag tag-global">GLOBAL — affects both</span>` : '';
-    return `<div class="edit-item"><div class="edit-item-label">${f.label}${lockTag}${globalTag}</div><textarea class="edit-textarea" id="ef_${f.key}" rows="3" ${locked}>${val}</textarea></div>`;
+
+    if (f.trigger) {
+      // Token editor: two textareas split around the locked chip
+      const { before, after } = splitTrigger(raw || '');
+      return `<div class="edit-item">
+        <div class="edit-item-label">${f.label}${lockTag}${globalTag}</div>
+        <div class="token-editor" data-key="${f.key}">
+          <textarea class="edit-textarea token-before" id="ef_${f.key}_before" rows="2" placeholder="Text before trigger...">${before}</textarea>
+          <div class="trigger-chip"><span class="trigger-chip-icon">⚑</span>${f.trigger}</div>
+          <textarea class="edit-textarea token-after" id="ef_${f.key}_after" rows="2" placeholder="Text after trigger... (optional)">${after}</textarea>
+        </div>
+        <div class="token-preview" id="preview_${f.key}"></div>
+      </div>`;
+    }
+
+    // Plain textarea
+    return `<div class="edit-item">
+      <div class="edit-item-label">${f.label}${lockTag}${globalTag}</div>
+      <textarea class="edit-textarea" id="ef_${f.key}" rows="3" ${f.mandatory ? 'disabled' : ''}>${raw || ''}</textarea>
+    </div>`;
   }).join('');
+
+  // Wire up live previews for token fields
+  EDIT_FIELDS.filter(f => f.trigger).forEach(f => {
+    const updatePreview = () => {
+      const before = document.getElementById(`ef_${f.key}_before`).value;
+      const after = document.getElementById(`ef_${f.key}_after`).value;
+      const preview = document.getElementById(`preview_${f.key}`);
+      preview.innerHTML = `<span style="color:var(--text3);font-size:11px;font-family:var(--mono);letter-spacing:0.05em;">PREVIEW  </span>${before}<span class="mandatory">${f.trigger}</span>${after}`;
+    };
+    document.getElementById(`ef_${f.key}_before`).addEventListener('input', updatePreview);
+    document.getElementById(`ef_${f.key}_after`).addEventListener('input', updatePreview);
+    updatePreview();
+  });
+
   document.getElementById('editor-modal').classList.add('open');
 }
 
 function closeEditor() { document.getElementById('editor-modal').classList.remove('open'); }
 
 function saveEditor() {
+  let valid = true;
   EDIT_FIELDS.forEach(f => {
     if (f.mandatory) return;
-    const el = document.getElementById(`ef_${f.key}`);
-    if (!el) return;
-    if (f.scope === 'global') scripts.global[f.key] = el.value;
-    else scripts[profile][f.key] = el.value;
+    if (f.trigger) {
+      const before = document.getElementById(`ef_${f.key}_before`);
+      const after = document.getElementById(`ef_${f.key}_after`);
+      if (!before) return;
+      const joined = joinTrigger(before.value, after.value);
+      if (f.scope === 'global') scripts.global[f.key] = joined;
+      else scripts[profile][f.key] = joined;
+    } else {
+      const el = document.getElementById(`ef_${f.key}`);
+      if (!el) return;
+      if (f.scope === 'global') scripts.global[f.key] = el.value;
+      else scripts[profile][f.key] = el.value;
+    }
   });
+  if (!valid) return;
   saveToStorage();
   closeEditor();
   render();
 }
+
 
 // ── EXPORT / IMPORT ───────────────────────────────────────────────
 function exportSettings() {
